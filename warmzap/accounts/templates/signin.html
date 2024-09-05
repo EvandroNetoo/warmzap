@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block body %}
+
+    <div class="sm:grid sm:grid-cols-2 h-screen">
+        <!-- Coluna da imagem -->
+        <div class="relative overflow-hidden">
+            <img class="hidden sm:block sm:w-full sm:h-full sm:object-cover sm:object-left xl:object-top " src="{% static 'general/img/whatsapp_bg.png' %}" alt=""/>
+
+        </div>
+        <!-- Coluna de login -->
+        <div class="flex items-center justify-center bg-gray-100">
+            <div class="max-w-sm w-full p-8">
+                <!-- Conteúdo de login aqui -->
+                <h2 class="text-2xl font-bold mb-4">Login</h2>
+                <form>
+                    <label class="block mb-2">
+                        <span class="text-gray-700">Email</span>
+                        <input type="email" class="form-input mt-1 block w-full" placeholder="Seu email"/>
+                    </label>
+                    <label class="block mb-4">
+                        <span class="text-gray-700">Senha</span>
+                        <input type="password" class="form-input mt-1 block w-full" placeholder="Sua senha"/>
+                    </label>
+                    <button type="submit" class="primary-button">Entrar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock body %}

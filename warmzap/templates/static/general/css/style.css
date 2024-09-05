@@ -1,0 +1,9 @@
+.primary-button {
+    width: 100%;
+    background-color: #FD6B3C;
+    height: 48px;
+    border-radius: 24px;
+    color: white;
+    font-size: 16px;
+    line-height: 24px;
+} 

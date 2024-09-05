@@ -1,0 +1,43 @@
+[tool.poetry]
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.12"
+django = "^5.1.1"
+django-htmx = "^1.19.0"
+pydantic-settings = "^2.4.0"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.6.4"
+djlint = "^1.35.2"
+django-debug-toolbar = "^4.4.6"
+taskipy = "^1.13.0"
+
+[tool.taskipy.tasks]
+lint = 'ruff check . && djlint . --check'
+format = 'ruff check . --fix && ruff format . && djlint . --reformat --quiet'
+run = 'python warmzap/manage.py runserver'
+makemigrations = 'python warmzap/manage.py makemigrations'
+migrate = 'python warmzap/manage.py migrate'
+
+[tool.djlint]
+max_blank_lines = 1
+indent = 4
+tabs = true
+format_css = true
+format_js = true
+use_gitignore = true
+space_around_blocks = true
+blank_line_before_tag = 'include,block,endblock,crispy,if,else,endif,for,endfor,comment,endcomment,with'
+blank_line_after_tag = 'include,block,endblock,crispy,if,else,endif,for,endfor,comment,endcomment,with,load,extends'
+ignore = 'H005,H006,H007,H008,H009,H010,H011,H012,H013,H014,H015,H016,H017,H019,H020,H021,H022,H023,H024,H025,H026,H029,H030,H031,H033,H035'
+
+[tool.djlint.css]
+indent_size = 4
+
+[tool.djlint.js]
+indent_size = 4
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
