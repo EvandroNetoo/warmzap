@@ -30,7 +30,7 @@ class SignUpView(View):
 
         user = form.save()
         login(request, user)
-        return HttpResponseClientRedirect(reverse('home'))
+        return HttpResponseClientRedirect(reverse('dashboard'))
 
 
 @method_decorator(login_not_required, 'dispatch')
@@ -56,5 +56,5 @@ class SignInView(View):
         redirect_url = request.GET.get('next')
 
         return HttpResponseClientRedirect(
-            redirect_url if redirect_url else reverse('home')
+            redirect_url if redirect_url else reverse('dashboard')
         )

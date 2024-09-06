@@ -22,7 +22,15 @@
 
     </head>
 
-    <body>
+    <body class="collapsed">
+        <script>
+            (function() {
+                const isCollapsed = localStorage.getItem('sidebarCollapsed');
+                if (isCollapsed === 'false') {
+                    document.body.classList.add('collapsed');
+                }
+            })();
+        </script>
 
         <c-sidebar />
 
@@ -31,7 +39,6 @@
         {% endblock body %}
 
         <script src="{% static 'general/js/sidebar.js' %}"></script>
-
     </body>
 
 </html>

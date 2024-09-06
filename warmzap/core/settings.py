@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     # Project apps
     'accounts',
+    'phone_heater',
 ]
 
 MIDDLEWARE = [
