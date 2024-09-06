@@ -22,15 +22,9 @@
 
     </head>
 
-    <body class="collapsed">
-        <script>
-            (function() {
-                const isCollapsed = localStorage.getItem('sidebarCollapsed');
-                if (isCollapsed === 'false') {
-                    document.body.classList.add('collapsed');
-                }
-            })();
-        </script>
+    <body class=" 
+        {% if sidebar_collapsed %}collapsed{% endif %}
+         ">
 
         <c-sidebar />
 

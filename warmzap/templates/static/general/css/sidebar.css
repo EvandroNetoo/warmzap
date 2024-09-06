@@ -51,21 +51,20 @@ body.collapsed .hide {
   display: none;
 }
 
-#logo_banner {
-  display: block;
-}
-
-body.collapsed #logo_banner{
+.collapsed-show {
   display: none;
 }
 
-#logo {
-  padding: 8px;
-  display: none;
+body.collapsed .collapsed-show{
+  display: block;
 }
 
-body.collapsed #logo{
+.collapsed-hidden {
   display: block;
+}
+
+body.collapsed .collapsed-hidden{
+  display: none;
 }
 
 /*? search wrapper */
