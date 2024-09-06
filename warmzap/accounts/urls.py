@@ -4,8 +4,13 @@ from accounts import views
 
 urlpatterns = [
     path(
-        "signin/",
+        'signin/',
         views.SignInView.as_view(),
-        name="signin",
-    )
+        name='signin',
+    ),
+    path(
+        'signup/',
+        views.SignUpView.as_view(),
+        name='signup',
+    ),
 ]

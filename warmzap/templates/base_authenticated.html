@@ -9,6 +9,7 @@
         <title>Warm Zap</title>
 
         <link rel="stylesheet" href="{% static 'general/css/style.css' %}">
+        <link rel="stylesheet" href="{% static 'general/css/sidebar.css' %}">
 
         <script src="https://cdn.tailwindcss.com"></script>
         <script src="https://unpkg.com/htmx.org@2.0.2"
@@ -23,9 +24,13 @@
 
     <body>
 
+        <c-sidebar />
+
         {% block body %}
 
         {% endblock body %}
+
+        <script src="{% static 'general/js/sidebar.js' %}"></script>
 
     </body>
 

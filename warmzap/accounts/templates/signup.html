@@ -1,0 +1,76 @@
+{% extends 'base_authenticated.html' %}
+
+{% load static %}
+
+{% block body %}
+
+    <c-accounts-base-page>
+    <div class="flex justify-end w-full p-4">
+        <div class="flex gap-x-4 items-center">
+            <span class="text-slate-700">Já possui conta?</span>
+            <a href="{% url 'signin' %}" class="light-button">Fazer Login</a>
+        </div>
+    </div>
+
+    <div class="w-full md:w-3/4 max-w-md">
+        <div class="flex flex-col gap-y-6">
+
+            <img class="sm:hidden bg-secondary-950"
+                 src="{% static 'general/img/logo_banner.png' %}">
+
+            <div>
+                <h2 class="text-2xl font-bold text-center">Cadastre no WarmZap</h2>
+                <p class="text-slate-500 text-center">É apenas inserir seus dados</p>
+            </div>
+
+            <form class="flex flex-col px-4 md:px-0"
+                  hx-post="{% url 'signup' %}"
+                  hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                  hx-target="#form">
+
+                <div id="form">
+
+                    {% include "components/form.html" %}
+
+                </div>
+
+                <button type="submit" class="primary-button w-full">Cadastrar</button>
+
+            </form>
+        </div>
+    </div>
+    </c-accounts-base-page>
+
+    <script>
+        const cellphoneMask = (input) => {
+            let value = input.value.replace(/\D/g, ''); // Remove tudo que não for dígito
+
+            if (value.length <= 10) {
+                value = value.replace(/^(\d{0,2})(\d{0,4})(\d{0,4})/, function(match, g1, g2, g3) {
+                    if (g3) {
+                        return `(${g1}) ${g2}-${g3}`;
+                    } else if (g2) {
+                        return `(${g1}) ${g2}`;
+                    } else if (g1) {
+                        return `(${g1}`;
+                    }
+                    return '';
+                });
+            } else {
+                value = value.replace(/^(\d{0,2})(\d{0,5})(\d{0,4})/, function(match, g1, g2, g3) {
+                    if (g3) {
+                        return `(${g1}) ${g2}-${g3}`;
+                    } else if (g2) {
+                        return `(${g1}) ${g2}`;
+                    } else if (g1) {
+                        return `(${g1}`;
+                    }
+                    return '';
+                });
+            }
+
+            input.value = value; // Atualiza o valor do campo de entrada
+        };
+    </script>
+
+{% endblock body %}

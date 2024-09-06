@@ -4,30 +4,45 @@
 
 {% block body %}
 
-    <div class="sm:grid sm:grid-cols-2 h-screen">
-        <!-- Coluna da imagem -->
-        <div class="relative overflow-hidden">
-            <img class="hidden sm:block sm:w-full sm:h-full sm:object-cover sm:object-left xl:object-top " src="{% static 'general/img/whatsapp_bg.png' %}" alt=""/>
+    <c-accounts-base-page>
 
-        </div>
-        <!-- Coluna de login -->
-        <div class="flex items-center justify-center bg-gray-100">
-            <div class="max-w-sm w-full p-8">
-                <!-- Conteúdo de login aqui -->
-                <h2 class="text-2xl font-bold mb-4">Login</h2>
-                <form>
-                    <label class="block mb-2">
-                        <span class="text-gray-700">Email</span>
-                        <input type="email" class="form-input mt-1 block w-full" placeholder="Seu email"/>
-                    </label>
-                    <label class="block mb-4">
-                        <span class="text-gray-700">Senha</span>
-                        <input type="password" class="form-input mt-1 block w-full" placeholder="Sua senha"/>
-                    </label>
-                    <button type="submit" class="primary-button">Entrar</button>
-                </form>
-            </div>
+    <div class="flex justify-end w-full p-4">
+        <div class="flex gap-x-4 items-center">
+            <span class="text-slate-700">Não possui conta?</span>
+            <a href="{% url 'signup' %}" type="submit" class="light-button">Cadastre-se</a>
         </div>
     </div>
+
+    <div class="w-full md:w-3/4 max-w-md">
+        <div class="flex flex-col gap-y-6">
+
+            <img class="sm:hidden bg-secondary-950"
+                 src="{% static 'general/img/logo_banner.png' %}">
+
+            <div>
+                <h2 class="text-2xl font-bold text-center">Login</h2>
+                <p class="text-slate-500 text-center">Entre em sua conta</p>
+            </div>
+
+            <form class="flex flex-col px-4 md:px-0"
+                  hx-post="{% url 'signin' %}?{{ request.GET.urlencode }}"
+                  hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                  hx-target="#form">
+
+                <div id="form">
+
+                    {% include "components/form.html" %}
+
+                </div>
+                <div class="flex justify-end mb-4">
+                    <a href="" class="text-slate-500 underline">Esqueceu sua senha?</a>
+                </div>
+                <button type="submit" class="primary-button w-full">Entrar</button>
+
+            </form>
+        </div>
+    </div>
+
+    </c-accounts-base-page>
 
 {% endblock body %}

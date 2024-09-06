@@ -8,46 +8,46 @@ from accounts.models import User
 class UserAdmin(auth_admin.UserAdmin):
     model = User
     add_form_template = None
-    search_fields = ["email"]
-    list_filter = ["is_staff", "is_superuser"]
-    list_display = ["email"]
-    list_display_links = ["email"]
-    readonly_fields = ["date_joined", "last_login"]
-    ordering = ["email"]
+    search_fields = ['email']
+    list_filter = ['is_staff', 'is_superuser']
+    list_display = ['email']
+    list_display_links = ['email']
+    readonly_fields = ['date_joined', 'last_login']
+    ordering = ['email']
     fieldsets = (
         (
-            "Informações de login",
+            'Informações de login',
             {
-                "fields": (
-                    "email",
-                    "password",
+                'fields': (
+                    'email',
+                    'password',
                 )
             },
         ),
         (
-            "Permissões",
+            'Permissões',
             {
-                "fields": (
-                    "is_staff",
-                    "is_superuser",
+                'fields': (
+                    'is_staff',
+                    'is_superuser',
                 ),
             },
         ),
         (
-            "Datas importantes",
+            'Datas importantes',
             {
-                "fields": (
-                    "last_login",
-                    "date_joined",
+                'fields': (
+                    'last_login',
+                    'date_joined',
                 )
             },
         ),
     )
     add_fieldsets = (
         (
-            "Informações de login",
+            'Informações de login',
             {
-                "fields": ("email", "password1", "password2"),
+                'fields': ('email', 'password1', 'password2'),
             },
         ),
     )

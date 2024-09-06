@@ -6,6 +6,8 @@ python = "^3.12"
 django = "^5.1.1"
 django-htmx = "^1.19.0"
 pydantic-settings = "^2.4.0"
+django-cotton = "^0.9.35"
+django-widget-tweaks = "^1.5.0"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.6.4"
@@ -37,6 +39,34 @@ indent_size = 4
 
 [tool.djlint.js]
 indent_size = 4
+
+[tool.ruff]
+line-length = 79
+extend-exclude = ['migrations']
+
+[tool.ruff.lint]
+preview = true
+select = [
+    'A',
+    'B',
+    'C',
+    'E',
+    'F',
+    'I',
+    'N',
+    'PL',
+    'PT',
+    'Q',
+    'S',
+    'T',
+    'W',
+    'DJ',
+]
+ignore = ['E501', 'Q000', 'Q003', 'S101', 'DJ008']
+
+[tool.ruff.format]
+preview = true
+quote-style = 'single'
 
 [build-system]
 requires = ["poetry-core"]

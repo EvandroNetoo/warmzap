@@ -1,9 +1,71 @@
+:root {
+    --color-primary-50: #FFF3ED;
+    --color-primary-100: #FFE4D5;
+    --color-primary-200: #FFC5A9;
+    --color-primary-300: #FE9D73;
+    --color-primary-400: #FD6B3C;
+    --color-primary-500: #FB4314;
+    --color-secondary-950: #003027;
+    --tw-color-slate-100: #f1f5f9;
+    --tw-color-slate-200: #e2e8f0;
+    --tw-color-slate-300: #cbd5e1;
+    --tw-color-slate-800: #1e293b;
+    --tw-color-slate-900: #0f172a;
+    --tw-color-secondary: #9333ea;
+  }
+
+.bg-secondary-950 {
+    background-color: var(--color-secondary-950);
+}
+
 .primary-button {
-    width: 100%;
-    background-color: #FD6B3C;
     height: 48px;
     border-radius: 24px;
-    color: white;
     font-size: 16px;
     line-height: 24px;
-} 
+    transition-duration: 200ms;
+    padding: 10px 20px 10px 20px;
+    color: white;
+    background-color: var(--color-primary-400);
+}
+
+.primary-button:hover {
+    background-color: var(--color-primary-500);
+}
+
+.light-button {
+    display: flex;
+    align-items: center;
+    height: 48px;
+    border-radius: 24px;
+    font-size: 16px;
+    line-height: 24px;
+    transition-duration: 200ms;
+    padding: 10px 20px 10px 20px;
+    color: var(--tw-color-slate-900);
+    font-weight: 500px;
+    background-color: transparent;
+    border: var(--tw-color-slate-300) 1px solid;
+}
+
+.light-button:hover {
+    background-color: var(--tw-color-slate-100);
+}
+ 
+.form-input {
+    height: 48px;
+    border-radius: 24px;
+    font-size: 14px;
+    line-height: 20px;
+    padding: 8px 16px 8px 16px;
+    width: 100%;
+    color: var(--tw-color-slate-800);
+    border: 1px solid var(--tw-color-slate-300);
+    transition-duration: 100ms;
+}
+
+input:focus {
+    border-color: var(--color-primary-300); 
+    outline: none; 
+}
+
