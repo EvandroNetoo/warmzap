@@ -8,6 +8,11 @@ urlpatterns = [
         views.DashboardView.as_view(),
         name='dashboard',
     ),
+    path(
+        'my-chips/',
+        views.MyChipsView.as_view(),
+        name='my_chips',
+    ),
 ]
 
 htmx_urls = [

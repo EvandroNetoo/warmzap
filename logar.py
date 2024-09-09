@@ -4,7 +4,7 @@ from selenium.webdriver.chrome.options import Options
 
 # Configure o caminho para o perfil de usuário do Chrome
 chrome_options = Options()
-chrome_options.add_argument("user-data-dir=/home/evandro/python_projects/warmzap/perfil")
+chrome_options.add_argument(r"user-data-dir=C:\Users\2024122760105\Desktop\warmzap\perfil")
 
 # Inicie o WebDriver com o perfil de usuário
 service = Service()

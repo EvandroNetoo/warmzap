@@ -13,3 +13,11 @@ class DashboardView(View):
             'chip_form': ChipForm(),
         }
         return render(request, self.template_name, context)
+
+
+class MyChipsView(View):
+    template_name = 'my_chips.html'
+
+    def get(self, request: HttpRequest):
+        context = {}
+        return render(request, self.template_name, context)
