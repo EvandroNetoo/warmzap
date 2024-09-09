@@ -8,7 +8,7 @@ from core import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
-    path('', include('phone_heater.urls')),
+    path('', include('chip_heater.urls')),
 ]
 
 

@@ -5,11 +5,16 @@
     --color-primary-300: #FE9D73;
     --color-primary-400: #FD6B3C;
     --color-primary-500: #FB4314;
+    --color-secondary-50: #EBFEF6;
+    --color-secondary-200: #A0FAD7;
+    --color-secondary-500: #01C893;
+    --color-secondary-600: #00A378;
     --color-secondary-900: #005443;
     --color-secondary-950: #003027;
     --tw-color-slate-100: #f1f5f9;
     --tw-color-slate-200: #e2e8f0;
     --tw-color-slate-300: #cbd5e1;
+    --tw-color-slate-500: #64748b;
     --tw-color-slate-800: #1e293b;
     --tw-color-slate-900: #0f172a;
     --tw-color-secondary: #9333ea;
@@ -21,6 +26,10 @@
 
 .bg-secondary-900 {
     background-color: var(--color-secondary-900);
+}
+
+.bg-primary-400 {
+    background-color: var(--color-primary-400);
 }
 
 
@@ -35,10 +44,35 @@
     color: white;
     background-color: var(--color-primary-400);
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 }
 
 .primary-button:hover {
     background-color: var(--color-primary-500);
+}
+
+.secondary-button {
+    height: 48px;
+    border-radius: 24px;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: center;
+    transition-duration: 200ms;
+    padding: 10px 20px;
+    color: white;
+    background-color: var(--color-secondary-500);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.secondary-button:hover {
+    background-color: var(--color-secondary-600);
 }
 
 .light-button {
@@ -70,6 +104,11 @@
     color: var(--tw-color-slate-800);
     border: 1px solid var(--tw-color-slate-300);
     transition-duration: 100ms;
+}
+
+.form-input::placeholder {
+    font-size: 14px;
+    color: var(--tw-color-slate-500);
 }
 
 .form-input:focus {

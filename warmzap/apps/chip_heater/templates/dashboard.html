@@ -1,0 +1,208 @@
+{% extends 'base_authenticated.html' %}
+
+{% block body %}
+
+    <div class="flex flex-col gap-y-10">
+        <div class="flex gap-x-4 items-center">
+            <svg width="24"
+                 height="24"
+                 viewBox="0 0 24 24"
+                 fill="none"
+                 style="color: var(--color-primary-400)"
+                 xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 17H4C3.46957 17 2.96086 16.7893 2.58579 16.4142C2.21071 16.0391 2 15.5304 2 15V5C2 4.46957 2.21071 3.96086 2.58579 3.58579C2.96086 3.21071 3.46957 3 4 3H20C20.5304 3 21.0391 3.21071 21.4142 3.58579C21.7893 3.96086 22 4.46957 22 5V15C22 15.5304 21.7893 16.0391 21.4142 16.4142C21.0391 16.7893 20.5304 17 20 17H19M12 15L17 21H7L12 15Z"  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <div>
+                <h1 class="text-slate-950 text-base	font-bold">Dashboard</h1>
+                <p class="text-slate-500 text-sm">Veja como está o fluxo de aquecimento dos seus chips.</p>
+            </div>
+        </div>
+        <c-messages/>
+        <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-4">
+            <input type="text"
+                   class="form-input"
+                   placeholder="Pesquisar por código do número...">
+
+            <div class="hidden xl:block xl:col-span-2"></div>
+
+            <button class="primary-button" onclick="addChipModal.showModal()">
+                <svg width="24"
+                     height="24"
+                     viewBox="0 0 24 24"
+                     fill="none"
+                     xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5 12H19M12 5V19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                Novo número
+            </button>
+
+            <dialog id="addChipModal" class="modal">
+                <div class="modal-box grid gap-y-8">
+                    <button onclick="addChipModal.close()"
+                            class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+
+                    <div>
+                        <h1 class="text-xl font-bold">Novo número</h1>
+                        <p class="text-slate-500">Digite os dados essenciais para prosseguir</p>
+                    </div>
+
+                    <form class="grid gap-y-8"
+                                hx-post="{% url 'add_chip' %}"
+                            hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                            hx-target="#form">
+                        <div id="form">
+
+                            {% include "components/form.html" with form=chip_form %}
+
+                        </div>
+                        <div class="flex justify-end gap-4">
+                            <button type="button" class="light-button" onclick="addChipModal.close()">Cancelar</button>
+                            <button type="submit" class="primary-button">Avançar</button>
+                        </div>
+                    </form>
+                </div>
+            </dialog>
+
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-5 items-start">
+
+            <div class="flex flex-col align-center gap-4">
+                <div class="flex justify-center items-center gap-x-2 p-2 bg-indigo-50 h-12 rounded-3xl">
+                    <svg width="24"
+                         height="24"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 12V7M16 9C16.5571 9.74285 16.8964 10.6262 16.9798 11.551C17.0632 12.4758 16.8874 13.4055 16.4721 14.2361C16.0569 15.0666 15.4185 15.7651 14.6287 16.2533C13.8388 16.7414 12.9286 17 12 17C11.0714 17 10.1612 16.7414 9.37134 16.2533C8.58146 15.7651 7.94313 15.0666 7.52786 14.2361C7.1126 13.4055 6.93681 12.4758 7.0202 11.551C7.10359 10.6262 7.44286 9.74285 8 9M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="#C7D2FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+
+                    <p class="text-indigo-600">Não iniciados</p>
+
+                    <div class="bg-indigo-600 flex items-center justify-center h-7 w-7 rounded rounded-full">
+                        <span class="text-white">3</span>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <c-not-started-card />
+                    <c-not-started-card />
+                </div>
+            </div>
+
+            <div class="flex flex-col justify-center gap-4">
+                <div style="background-color: var(--color-primary-50)"
+                     class="flex justify-center items-center gap-x-2 p-2 bg-indigo-50 h-12 rounded-3xl">
+                    <svg width="24"
+                         height="24"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8.5 14.5C9.16304 14.5 9.79893 14.2366 10.2678 13.7678C10.7366 13.2989 11 12.663 11 12C11 10.62 10.5 10 10 9C8.928 6.857 9.776 4.946 12 3C12.5 5.5 14 7.9 16 9.5C18 11.1 19 13 19 15C19 15.9193 18.8189 16.8295 18.4672 17.6788C18.1154 18.5281 17.5998 19.2997 16.9497 19.9497C16.2997 20.5998 15.5281 21.1154 14.6788 21.4672C13.8295 21.8189 12.9193 22 12 22C11.0807 22 10.1705 21.8189 9.32122 21.4672C8.47194 21.1154 7.70026 20.5998 7.05025 19.9497C6.40024 19.2997 5.88463 18.5281 5.53284 17.6788C5.18106 16.8295 5 15.9193 5 15C5 13.847 5.433 12.706 6 12C6 12.663 6.26339 13.2989 6.73223 13.7678C7.20107 14.2366 7.83696 14.5 8.5 14.5Z" stroke="#FFC5A9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+
+                    <p style="color: var(--color-primary-400);">Em aquecimento</p>
+
+                    <div style="background-color: var(--color-primary-400)"
+                         class="flex items-center justify-center h-7 w-7 rounded rounded-full">
+                        <span class="text-white">3</span>
+                    </div>
+
+                </div>
+                <div class="flex flex-col gap-2">
+                    <c-in-heating-card />
+                    <c-in-heating-card />
+                    <c-in-heating-card />
+                    <c-in-heating-card />
+                    <c-in-heating-card />
+                    <c-in-heating-card />
+                </div>
+            </div>
+
+            <div class="flex flex-col justify-center gap-4">
+                <div style="background-color: var(--color-secondary-50)"
+                     class="flex justify-center items-center gap-x-2 p-2 bg-indigo-50 h-12 rounded-3xl">
+                    <svg width="24"
+                         height="24"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path d="M18 6L7 17L2 12M22 10L14.5 17.5L13 16" stroke="#A0FAD7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+
+                    <p style="color: var(--color-secondary-600);">Concluidos</p>
+
+                    <div style="background-color: var(--color-secondary-600)"
+                         class="flex items-center justify-center h-7 w-7 rounded rounded-full">
+                        <span class="text-white">3</span>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <c-completed-card />
+                    <c-completed-card />
+                </div>
+            </div>
+
+            <div class="flex flex-col justify-center gap-4">
+                <div class="bg-red-50 flex justify-center items-center gap-x-2 p-2 bg-indigo-50 h-12 rounded-3xl">
+                    <svg width="24"
+                         height="24"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22 2L2 22M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="#FECACA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+
+                    <p class="text-red-600">Banidos</p>
+
+                    <div class="bg-red-600 flex items-center justify-center h-7 w-7 rounded rounded-full">
+                        <span class="text-white">3</span>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <c-banned-card />
+                    <c-banned-card />
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function toggleCard(cardId) {
+            const card = document.getElementById(`card-${cardId}`);
+            card.classList.toggle('hidden');
+        }
+
+        const cellphoneMask = (input) => {
+            let value = input.value.replace(/\D/g, ''); // Remove tudo que não for dígito
+
+            if (value.length <= 10) {
+                value = value.replace(/^(\d{0,2})(\d{0,4})(\d{0,4})/, function(match, g1, g2, g3) {
+                    if (g3) {
+                        return `(${g1}) ${g2}-${g3}`;
+                    } else if (g2) {
+                        return `(${g1}) ${g2}`;
+                    } else if (g1) {
+                        return `(${g1}`;
+                    }
+                    return '';
+                });
+            } else {
+                value = value.replace(/^(\d{0,2})(\d{0,5})(\d{0,4})/, function(match, g1, g2, g3) {
+                    if (g3) {
+                        return `(${g1}) ${g2}-${g3}`;
+                    } else if (g2) {
+                        return `(${g1}) ${g2}`;
+                    } else if (g1) {
+                        return `(${g1}`;
+                    }
+                    return '';
+                });
+            }
+
+            input.value = value; // Atualiza o valor do campo de entrada
+        };
+    </script>
+
+{% endblock body %}

@@ -1,0 +1,20 @@
+<div class="flex flex-col gap-4 p-4 border border-slate-200 rounded-lg">
+    <div class="flex justify-between">
+        <div class="text-slate-900 flex gap-4">
+            <c-svg.cellphone />
+            <p class="font-medium">LK #27</p>
+        </div>
+        <div class="flex align-center gap-2">
+            <button onclick="toggleCard(1)">
+                <c-svg.eye />
+            </button>
+            <button>
+                <c-svg.copy />
+            </button>
+        </div>
+    </div>
+
+    <div id="card-1" class="hidden">
+        <c-phone-infos />
+    </div>
+</div>

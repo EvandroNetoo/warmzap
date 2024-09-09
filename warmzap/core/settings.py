@@ -3,6 +3,7 @@ import sys
 from pathlib import Path
 
 from core.env_settings import env_settings
+from django.contrib import messages
 
 PROJECT_ROOT = os.path.dirname(__file__)
 sys.path.insert(0, os.path.join(PROJECT_ROOT, '../apps'))
@@ -31,7 +32,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     # Project apps
     'accounts',
-    'phone_heater',
+    'chip_heater',
 ]
 
 MIDDLEWARE = [
@@ -132,3 +133,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Cotton
 
 COTTON_DIR = 'components'
+
+# messages
+MESSAGE_TAGS = {
+    messages.DEBUG: 'alert-info',
+    messages.INFO: 'alert-info',
+    messages.SUCCESS: 'alert-success',
+    messages.WARNING: 'alert-warning',
+    messages.ERROR: 'alert-danger',
+}

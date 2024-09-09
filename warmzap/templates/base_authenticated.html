@@ -1,7 +1,7 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" data-theme="light">
 
     <head>
         <meta charset="UTF-8">
@@ -10,6 +10,9 @@
 
         <link rel="stylesheet" href="{% static 'general/css/style.css' %}">
         <link rel="stylesheet" href="{% static 'general/css/sidebar.css' %}">
+        <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css"
+              rel="stylesheet"
+              type="text/css" />
 
         <script src="https://cdn.tailwindcss.com"></script>
         <script src="https://unpkg.com/htmx.org@2.0.2"
@@ -24,15 +27,25 @@
 
     <body class=" 
         {% if sidebar_collapsed %}collapsed{% endif %}
-         ">
+         min-h-screen flex flex-col">
 
         <c-sidebar />
 
-        {% block body %}
+        <main class="p-4 md:p-10 w-full">
 
-        {% endblock body %}
+            {% block body %}
+
+            {% endblock body %}
+
+        </main>
+
+        <footer class="bg-primary-400 mt-auto px-4 py-6 flex justify-center items-center gap-4">
+            <img src="{% static 'general/img/footer_logo.png' %}" class="h-12">
+            <p class="text-white font-bold">O melhor software de aquecimento de chips do mercado</p>
+        </footer>
 
         <script src="{% static 'general/js/sidebar.js' %}"></script>
+
     </body>
 
 </html>
