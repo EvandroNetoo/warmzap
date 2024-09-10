@@ -1,6 +1,6 @@
 from django.urls import path
 
-from chip_heater import views, htmx_views
+from chip_heater import htmx_views, views
 
 urlpatterns = [
     path(

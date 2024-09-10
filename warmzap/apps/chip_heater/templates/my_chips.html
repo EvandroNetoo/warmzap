@@ -3,96 +3,37 @@
 {% block body %}
 
     <div class="flex flex-col gap-y-10">
-        <div class="flex justify-between">
-            <div class="flex gap-x-4 items-center">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 18H12.01M7 2H17C18.1046 2 19 2.89543 19 4V20C19 21.1046 18.1046 22 17 22H7C5.89543 22 5 21.1046 5 20V4C5 2.89543 5.89543 2 7 2Z" stroke="#FD6B3C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    
-                <div>
-                    <h1 class="text-slate-950 text-base	font-bold">Meus números</h1>
-                    <p class="text-slate-500 text-sm">Gerencie seu inventário de números</p>
-                </div>
-            </div>
-            <div class="flex gap-4">
-                <button class="light-button px-3">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M10.3 21C10.4674 21.3044 10.7134 21.5583 11.0125 21.7352C11.3115 21.912 11.6526 22.0053 12 22.0053C12.3474 22.0053 12.6885 21.912 12.9875 21.7352C13.2866 21.5583 13.5326 21.3044 13.7 21M6 8C6 6.4087 6.63214 4.88258 7.75736 3.75736C8.88258 2.63214 10.4087 2 12 2C13.5913 2 15.1174 2.63214 16.2426 3.75736C17.3679 4.88258 18 6.4087 18 8C18 15 21 17 21 17H3C3 17 6 15 6 8Z" stroke="#0F172A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        
-                </button>
-                <button class="light-button gap-x-2 px-2">
-                    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="36" height="36" rx="18" fill="#F1F5F9"/>
-                        <path d="M23.8337 25.5V23.8333C23.8337 22.9493 23.4825 22.1014 22.8573 21.4763C22.2322 20.8512 21.3844 20.5 20.5003 20.5H15.5003C14.6163 20.5 13.7684 20.8512 13.1433 21.4763C12.5182 22.1014 12.167 22.9493 12.167 23.8333V25.5" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M18.0003 17.1667C19.8413 17.1667 21.3337 15.6743 21.3337 13.8333C21.3337 11.9924 19.8413 10.5 18.0003 10.5C16.1594 10.5 14.667 11.9924 14.667 13.8333C14.667 15.6743 16.1594 17.1667 18.0003 17.1667Z" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    <p>Evandro Neto</p>
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M6 9L12 15L18 9" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                                          
-                </button>
-            </div>
-        </div>
 
-        <c-messages/>
+        <c-top-bar title="Meus números" subtitle="Gerencie seu inventário de números">
+        <svg width="24"
+             height="24"
+             viewBox="0 0 24 24"
+             fill="none"
+             xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 18H12.01M7 2H17C18.1046 2 19 2.89543 19 4V20C19 21.1046 18.1046 22 17 22H7C5.89543 22 5 21.1046 5 20V4C5 2.89543 5.89543 2 7 2Z" stroke="#FD6B3C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        </c-top-bar>
 
+        <c-messages />
         <div class="flex flex-wrap justify-between gap-4">
-            <div class="flex gap-2 p-2 bg-slate-100 rounded-3xl whitespace-nowrap">
+            <div class="flex flex-wrap gap-2 p-2 bg-slate-100 rounded-3xl whitespace-nowrap">
                 <button class="px-2 py-1 rounded-2xl bg-white text-slate-960 text-medium">Todos</button>
                 <button class="px-2 py-1 text-slate-500 text-medium">Aquecidos</button>
                 <button class="px-2 py-1 text-slate-500 text-medium">Em aquecimento</button>
                 <button class="px-2 py-1 text-slate-500 text-medium">Em espera</button>
             </div>
 
-            <div class="hidden xl:block xl:col-span-2"></div>
-
-            <button class="primary-button" onclick="addChipModal.showModal()">
-                <svg width="24"
-                     height="24"
-                     viewBox="0 0 24 24"
-                     fill="none"
-                     xmlns="http://www.w3.org/2000/svg">
-                    <path d="M5 12H19M12 5V19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-                Novo número
-            </button>
-
-            <dialog id="addChipModal" class="modal">
-                <div class="modal-box grid gap-y-8">
-                    <button onclick="addChipModal.close()"
-                            class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-
-                    <div>
-                        <h1 class="text-xl font-bold">Novo número</h1>
-                        <p class="text-slate-500">Digite os dados essenciais para prosseguir</p>
-                    </div>
-
-                    <form class="grid gap-y-8"
-                                hx-post="{% url 'add_chip' %}"
-                            hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-                            hx-target="#form">
-                        <div id="form">
-
-                            {% include "components/form.html" with form=chip_form %}
-
-                        </div>
-                        <div class="flex justify-end gap-4">
-                            <button type="button" class="light-button" onclick="addChipModal.close()">Cancelar</button>
-                            <button type="submit" class="primary-button">Avançar</button>
-                        </div>
-                    </form>
-                </div>
-            </dialog>
+            <c-form.add_chip />
 
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-5 items-start">
-
-
+        <div class="flex items-center gap-4 ">
+            <p class="text-slate-500 whitespace-nowrap">10 resultados</p>
+            <input class="form-input max-w-72"
+                   placeholder="Pesquise por código ou número...">
         </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-5 items-start"></div>
     </div>
-
 
 {% endblock body %}

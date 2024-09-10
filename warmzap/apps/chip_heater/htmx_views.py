@@ -1,10 +1,10 @@
+from django.contrib import messages
 from django.http import HttpRequest, HttpResponse
-from django.urls import reverse
+from django.template.loader import render_to_string
+from django_htmx.http import HttpResponseClientRefresh
 
 from chip_heater.forms import ChipForm
-from django.template.loader import render_to_string
-from django.contrib import messages
-from django_htmx.http import HttpResponseClientRefresh
+
 
 def add_chip(request: HttpRequest):
     if request.method == 'POST':
@@ -16,7 +16,7 @@ def add_chip(request: HttpRequest):
             return HttpResponse(html)
 
         chip = form.save(commit=False)
-        chip.user= request.user
+        chip.user = request.user
         chip.save()
 
         messages.success(request, 'Chip adicionado com sucesso.')

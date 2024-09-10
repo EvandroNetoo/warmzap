@@ -2,8 +2,9 @@ import os
 import sys
 from pathlib import Path
 
-from core.env_settings import env_settings
 from django.contrib import messages
+
+from core.env_settings import env_settings
 
 PROJECT_ROOT = os.path.dirname(__file__)
 sys.path.insert(0, os.path.join(PROJECT_ROOT, '../apps'))

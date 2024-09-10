@@ -27,9 +27,9 @@
     <div class="sidebar-links">
         <ul>
             <li>
-                <a href="{% url 'dashboard' %}"
-                   title="Dashboard"
-                   class="tooltip active-url">
+                <a href="{% url 'dashboard' %}" title="Dashboard" class="tooltip 
+                    {% if active_url == 'dashboard' %}active-url{% endif %}
+                    ">
                     <svg width="24"
                          height="24"
                          viewBox="0 0 24 24"
@@ -43,7 +43,8 @@
                 </a>
             </li>
             <li>
-                <a href="{% url 'my_chips' %}" title="Meus números" class="tooltip">
+                <a href="{% url 'my_chips' %}" title="Meus números" class="tooltip 
+                    {% if active_url == 'my_chips' %}active-url{% endif %}">
                     <svg width="24"
                          height="24"
                          viewBox="0 0 24 24"
@@ -57,7 +58,7 @@
                 </a>
             </li>
             <li>
-                <a href="" title="Dashboard" class="tooltip">
+                <a href="" title="Loja de chips" class="tooltip">
                     <svg width="24"
                          height="24"
                          viewBox="0 0 24 24"
@@ -71,7 +72,9 @@
                 </a>
             </li>
             <li>
-                <a href="" title="Dashboard" class="tooltip">
+                <a href="" title="Contatos" class="tooltip 
+                    {% if active_url == 'contatos' %}active-url{% endif %}
+                    ">
                     <svg width="24"
                          height="24"
                          viewBox="0 0 24 24"

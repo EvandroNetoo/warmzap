@@ -1,0 +1,37 @@
+<button class="primary-button" onclick="addChipModal.showModal()">
+    <svg width="24"
+         height="24"
+         viewBox="0 0 24 24"
+         fill="none"
+         xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 12H19M12 5V19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+    Novo número
+</button>
+
+<dialog id="addChipModal" class="modal">
+    <div class="modal-box grid gap-y-8">
+        <button onclick="addChipModal.close()"
+                class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+
+        <div>
+            <h1 class="text-xl font-bold">Novo número</h1>
+            <p class="text-slate-500">Digite os dados essenciais para prosseguir</p>
+        </div>
+
+        <form class="grid gap-y-8"
+              hx-post="{% url 'add_chip' %}"
+              hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+              hx-target="#form">
+            <div id="form">
+
+                {% include "components/form.html" with form=chip_form %}
+
+            </div>
+            <div class="flex justify-end gap-4">
+                <button type="button" class="light-button" onclick="addChipModal.close()">Cancelar</button>
+                <button type="submit" class="primary-button">Avançar</button>
+            </div>
+        </form>
+    </div>
+</dialog>
