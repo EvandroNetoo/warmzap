@@ -5,7 +5,7 @@
         <p class="text-slate-500">Número</p>
         <div class="flex justify-between align-center">
             <p class="text-slate-900">{{ chip.formated_number }}</p>
-            <button>
+            <button onclick="navigator.clipboard.writeText('{{ chip.formated_number }}')">
                 <c-svg.copy />
             </button>
         </div>
