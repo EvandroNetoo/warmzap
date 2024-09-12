@@ -21,8 +21,7 @@ htmx_urls = [
         htmx_views.generate_wpp_qrcode,
         name='add_chip',
     ),
-    path('generate-qrcode/', views.generate_qrcode, name='generate_qrcode')
-
+    path('generate-qrcode/', views.generate_qrcode, name='generate_qrcode'),
 ]
 
 urlpatterns += htmx_urls

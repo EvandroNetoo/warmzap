@@ -4,14 +4,10 @@
     <div class="grid">
         <p class="text-slate-500">Número</p>
         <div class="flex justify-between align-center">
-            <p class="text-slate-900">+55 (33) 99999-9999</p>
+            <p class="text-slate-900">{{ chip.formated_number }}</p>
             <button>
                 <c-svg.copy />
             </button>
         </div>
-    </div>
-    <div class="grid gap-2">
-        <p class="text-slate-500">Operadora</p>
-        <img src="{% static "chip_heater/img/operadora_vivo.png" %}" class="h-4">
     </div>
 </div>

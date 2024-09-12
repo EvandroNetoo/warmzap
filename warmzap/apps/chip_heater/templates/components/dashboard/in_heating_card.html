@@ -5,10 +5,10 @@
         <div class="flex justify-between">
             <div style="color: var(--color-primary-400);" class="flex gap-4">
                 <c-svg.cellphone />
-                <p class="font-medium">LK #27</p>
+                <p class="font-medium">{{ chip.name }}</p>
             </div>
             <div class="flex align-center gap-2">
-                <button onclick="toggleCard(2)">
+                <button onclick="toggleCard('{{ chip.id }}')">
                     <c-svg.eye />
                 </button>
                 <button>
@@ -21,7 +21,7 @@
             <p class="text-center text-slate-900 font-medium text-sm whitespace-nowrap">Restam 3 dias</p>
         </div>
     </div>
-    <div id="card-2" class="hidden">
+    <div id="card-{{ chip.id }}" class="hidden">
         <c-dashboard.phone-infos />
 
         <div class="mt-4">

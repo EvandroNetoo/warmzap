@@ -2,10 +2,10 @@
     <div class="flex justify-between">
         <div class="text-red-400 flex gap-4">
             <c-svg.cellphone />
-            <p class="font-medium">LK #27</p>
+            <p class="font-medium">{{ chip.name }}</p>
         </div>
         <div class="flex align-center gap-2">
-            <button onclick="toggleCard(4)">
+            <button onclick="toggleCard('{{ chip.id }}')">
                 <c-svg.eye />
             </button>
             <button>
@@ -14,7 +14,7 @@
         </div>
     </div>
 
-    <div id="card-4" class="hidden">
-        <c-dashboard.phone-infos />
+    <div id="card-{{ chip.id }}" class="hidden">
+        <c-dashboard.phone-infos :chip="chip" />
     </div>
 </div>

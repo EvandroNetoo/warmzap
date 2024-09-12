@@ -12,4 +12,3 @@ class ChipForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         self.fields['name'].widget.attrs['placeholder'] = 'Digite o nome'
-

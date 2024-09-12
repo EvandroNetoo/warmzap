@@ -135,7 +135,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 COTTON_DIR = 'components'
 
-# messages
+
+# Messages
+
 MESSAGE_TAGS = {
     messages.DEBUG: 'alert-info',
     messages.INFO: 'alert-info',
@@ -143,3 +145,8 @@ MESSAGE_TAGS = {
     messages.WARNING: 'alert-warning',
     messages.ERROR: 'alert-danger',
 }
+
+
+# Debug toolbar
+
+INTERNAL_IPS = ['127.0.0.1']

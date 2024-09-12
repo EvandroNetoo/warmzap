@@ -22,5 +22,3 @@ def generate_wpp_qrcode(request: HttpRequest):
         messages.success(request, 'Chip adicionado com sucesso.')
 
         return HttpResponseClientRefresh()
-
-

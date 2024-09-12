@@ -1,4 +1,3 @@
-from genericpath import isfile
 import os
 import shutil
 
@@ -41,13 +40,17 @@ def apagar_desnecessarios_em_default(diretorio):
             shutil.rmtree(caminho_item)  # Apaga pastas e subpastas
         elif os.path.isfile(caminho_item):
             os.remove(caminho_item)  # Apaga arquivos
-    wpp_index_db_path = os.path.join(diretorio, 'IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb')
+    wpp_index_db_path = os.path.join(
+        diretorio, 'IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb'
+    )
     for item in os.listdir(wpp_index_db_path):
         item_path = os.path.join(wpp_index_db_path, item)
 
         if os.path.isfile(item_path):
             if item.endswith('.log') or item in {'LOCK', 'LOG', 'LOG.old'}:
                 os.remove(item_path)
+
+
 def apagar_tudo_exceto_default(diretorio):
     for item in os.listdir(diretorio):
         caminho_item = os.path.join(diretorio, item)

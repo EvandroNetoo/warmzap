@@ -16,7 +16,7 @@
         </c-top-bar>
 
         <c-messages />
-        
+
         <div class="flex flex-wrap justify-between gap-4">
             <input type="text"
                    class="form-input w-72"
@@ -41,13 +41,14 @@
                     <p class="text-indigo-600">Não iniciados</p>
 
                     <div class="bg-indigo-600 flex items-center justify-center h-7 w-7 rounded rounded-full">
-                        <span class="text-white">3</span>
+                        <span class="text-white">{{ chips_counts.not_started_count }}</span>
                     </div>
                 </div>
 
                 <div class="flex flex-col gap-2">
-                    <c-dashboard.not-started-card />
-                    <c-dashboard.not-started-card />
+
+                    {% for chip in not_started_chips %}<c-dashboard.not-started-card :chip="chip" />{% endfor %}
+
                 </div>
             </div>
 
@@ -66,17 +67,14 @@
 
                     <div style="background-color: var(--color-primary-400)"
                          class="flex items-center justify-center h-7 w-7 rounded rounded-full">
-                        <span class="text-white">3</span>
+                        <span class="text-white">{{ chips_counts.started_count }}</span>
                     </div>
 
                 </div>
                 <div class="flex flex-col gap-2">
-                    <c-dashboard.in-heating-card />
-                    <c-dashboard.in-heating-card />
-                    <c-dashboard.in-heating-card />
-                    <c-dashboard.in-heating-card />
-                    <c-dashboard.in-heating-card />
-                    <c-dashboard.in-heating-card />
+
+                    {% for chip in started_chips %}<c-dashboard.in-heating-card :chip="chip" />{% endfor %}
+
                 </div>
             </div>
 
@@ -95,12 +93,13 @@
 
                     <div style="background-color: var(--color-secondary-600)"
                          class="flex items-center justify-center h-7 w-7 rounded rounded-full">
-                        <span class="text-white">3</span>
+                        <span class="text-white">{{ chips_counts.completed_count }}</span>
                     </div>
                 </div>
                 <div class="flex flex-col gap-2">
-                    <c-dashboard.completed-card />
-                    <c-dashboard.completed-card />
+
+                    {% for chip in completed_chips %}<c-dashboard.completed-card :chip="chip" />{% endfor %}
+
                 </div>
             </div>
 
@@ -117,12 +116,13 @@
                     <p class="text-red-600">Banidos</p>
 
                     <div class="bg-red-600 flex items-center justify-center h-7 w-7 rounded rounded-full">
-                        <span class="text-white">3</span>
+                        <span class="text-white">{{ chips_counts.banned_count }}</span>
                     </div>
                 </div>
                 <div class="flex flex-col gap-2">
-                    <c-dashboard.banned-card />
-                    <c-dashboard.banned-card />
+
+                    {% for chip in banned_chips %}<c-dashboard.banned-card :chip="chip" />{% endfor %}
+
                 </div>
             </div>
 
