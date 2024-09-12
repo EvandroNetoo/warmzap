@@ -54,6 +54,10 @@
     background-color: var(--color-primary-500);
 }
 
+.primary-button:disabled {
+    background-color: var(--color-primary-300);
+}
+
 .secondary-button {
     height: 48px;
     border-radius: 24px;

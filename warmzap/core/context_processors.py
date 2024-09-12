@@ -7,6 +7,7 @@ def sidebar(request: HttpRequest):
 
     actual_url_name = request.resolver_match.url_name
 
+    active_url = ''
     if actual_url_name in dashboard_urls:
         active_url = 'dashboard'
     if actual_url_name in my_chips_urls:

@@ -6,7 +6,7 @@ from django_htmx.http import HttpResponseClientRefresh
 from chip_heater.forms import ChipForm
 
 
-def add_chip(request: HttpRequest):
+def generate_wpp_qrcode(request: HttpRequest):
     if request.method == 'POST':
         form = ChipForm(request.POST)
 
@@ -22,3 +22,5 @@ def add_chip(request: HttpRequest):
         messages.success(request, 'Chip adicionado com sucesso.')
 
         return HttpResponseClientRefresh()
+
+

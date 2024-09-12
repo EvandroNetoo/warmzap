@@ -19,19 +19,83 @@
             <p class="text-slate-500">Digite os dados essenciais para prosseguir</p>
         </div>
 
-        <form class="grid gap-y-8"
-              hx-post="{% url 'add_chip' %}"
-              hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-              hx-target="#form">
-            <div id="form">
+        <div class="grid gap-y-8">
+            <div id="addChipForm">
 
                 {% include "components/form.html" with form=chip_form %}
 
             </div>
+            <div id="addChipBody"
+                 class="flex flex-col items-center justify-center hidden text-red-400 font-medium"></div>
             <div class="flex justify-end gap-4">
                 <button type="button" class="light-button" onclick="addChipModal.close()">Cancelar</button>
-                <button type="submit" class="primary-button">Avançar</button>
+                <button id="generateQrCodeBtn" type="button" class="primary-button">Gerar QRcode</button>
             </div>
-        </form>
+        </div>
     </div>
 </dialog>
+
+<script>
+    const generateQrCodeBtn = document.getElementById('generateQrCodeBtn')
+
+
+    function carregarQrCode() {
+        generateQrCodeBtn.disabled = true;
+
+        const inputForm = document.getElementById('addChipForm');
+        inputForm.classList.add('hidden');
+
+        const modalBody = document.getElementById('addChipBody');
+        modalBody.classList.remove('hidden');
+
+        modalBody.innerHTML = '<span class="loading loading-spinner loading-lg text-slate-500"></span>';
+        fetch('/generate-qrcode/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+                body: JSON.stringify({
+                    name: document.getElementById('id_name').value,
+                })
+            })
+            .then(response => {
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder('utf-8');
+
+                function process({
+                    done,
+                    value
+                }) {
+                    if (done) {
+                        if (modalBody.innerHTML.includes('Sincronizando')) {
+                            location.reload();
+                        }
+                        return;
+                    };
+
+                    const data = decoder.decode(value, {
+                        stream: true
+                    });
+
+                    if (data.startsWith("data:image/png;base64,")) {
+                        modalBody.innerHTML = `<img src="${data.trim()}" />`
+                    } else {
+                        modalBody.innerHTML = data;
+                        generateQrCodeBtn.disabled = false;
+                    }
+                    return reader.read().then(process);
+                }
+
+                return reader.read().then(process);
+            })
+            .catch(error => {
+                modalBody.innerText = "Erro ao conectar com o servidor.";
+                generateQrCodeBtn.disabled = false;
+            });
+        
+
+    }
+
+    generateQrCodeBtn.addEventListener('click', carregarQrCode)
+</script>
