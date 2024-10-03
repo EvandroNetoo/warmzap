@@ -49,6 +49,7 @@
 
                     {% for chip in not_started_chips %}<c-dashboard.not-started-card :chip="chip" />{% endfor %}
 
+
                 </div>
             </div>
 
@@ -75,6 +76,7 @@
 
                     {% for chip in started_chips %}<c-dashboard.in-heating-card :chip="chip" />{% endfor %}
 
+
                 </div>
             </div>
 
@@ -100,6 +102,7 @@
 
                     {% for chip in completed_chips %}<c-dashboard.completed-card :chip="chip" />{% endfor %}
 
+
                 </div>
             </div>
 
@@ -122,6 +125,7 @@
                 <div class="flex flex-col gap-2">
 
                     {% for chip in banned_chips %}<c-dashboard.banned-card :chip="chip" />{% endfor %}
+
 
                 </div>
             </div>

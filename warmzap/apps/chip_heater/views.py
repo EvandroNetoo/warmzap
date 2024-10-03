@@ -1,6 +1,11 @@
 import json
+import os
+import shutil
+from secrets import token_hex
 
+from django.conf import settings
 from django.contrib import messages
+from django.core.files import File
 from django.db.models import Count, Q
 from django.http import HttpRequest, StreamingHttpResponse
 from django.shortcuts import render
@@ -8,7 +13,8 @@ from django.views import View
 
 from chip_heater.forms import ChipForm
 from chip_heater.models import Chip
-from chip_heater.whatsapp_web import LoginQRcode, WhatsappWeb
+from chip_heater.tasks import send_message_and_schedule_next
+from chip_heater.whatsapp_web import LoginQRCode, WhatsAppWeb
 
 
 class DashboardView(View):
@@ -16,6 +22,8 @@ class DashboardView(View):
 
     def get(self, request: HttpRequest):
         chips = Chip.objects.filter(user=request.user)
+
+        send_message_and_schedule_next(chips.first().id)
 
         chips_counts = chips.aggregate(
             not_started_count=Count(
@@ -29,7 +37,6 @@ class DashboardView(View):
             ),
             banned_count=Count('id', filter=Q(stage=Chip.StageChoices.BANNED)),
         )
-
         not_started_chips = chips.filter(stage=Chip.StageChoices.NOT_STARTED)
         started_chips = chips.filter(stage=Chip.StageChoices.STARTED)
         completed_chips = chips.filter(stage=Chip.StageChoices.COMPLETED)
@@ -55,13 +62,19 @@ class MyChipsView(View):
 
 
 def generate_qrcode(request: HttpRequest):
-    whatsapp_web = WhatsappWeb()
+    directory_token = token_hex(16)
+    profile_dir_path = settings.BASE_DIR / f'wpp_sessions/{directory_token}'
+
+    whatsapp_web = WhatsAppWeb(profile_dir_path)
     payload = json.loads(request.body)
 
     def stream():
         success = False
-        for error, data in whatsapp_web.generate_login_qrcode():
-            if isinstance(data, LoginQRcode):
+        generator = whatsapp_web.generate_login_qrcode(
+            directory_token, profile_dir_path
+        )
+        for error, data in generator:
+            if isinstance(data, LoginQRCode):
                 yield f'data:image/png;base64{data.b64_qrcode}\n'
             else:
                 if error:
@@ -72,12 +85,23 @@ def generate_qrcode(request: HttpRequest):
                     <span class="loading loading-spinner loading-lg text-slate-500"></span>
                     <span class="text-green-400">Sincronizando dados.</span>
                 """
-                Chip.objects.create(
+                chip_instance = Chip(
                     name=payload.get('name'),
-                    number=data,
+                    number=next(generator),
                     user=request.user,
-                    directory_token=whatsapp_web.directory_token,
                 )
+                zip_file = shutil.make_archive(
+                    whatsapp_web.profile_dir_path,
+                    'zip',
+                    whatsapp_web.profile_dir_path,
+                )
+                with open(zip_file, 'rb') as f:
+                    chip_instance.browser_profile = File(
+                        f, name=os.path.basename(zip_file)
+                    )
+                    chip_instance.save()
+                os.remove(zip_file)
+                shutil.rmtree(whatsapp_web.profile_dir_path)
                 success = True
         if success:
             messages.success(request, 'Número adicionado com sucesso.')

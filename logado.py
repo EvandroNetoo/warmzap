@@ -1,13 +1,17 @@
 import os
 import shutil
+from urllib.parse import quote
 
 from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 
 # Use o mesmo perfil de usuário do Chrome
 chrome_options = Options()
-pasta = 'perfil'
+pasta = '/home/evandro/Desktop/warmzap/warmzap/media/browser_profiles/c2efe906eca146148585eeef6716fb14'
 chrome_options.add_argument(f'user-data-dir={pasta}')
 
 # Inicie o WebDriver com o perfil de usuário
@@ -15,11 +19,30 @@ service = Service()
 driver = webdriver.Chrome(service=service, options=chrome_options)
 
 # Acesse o WhatsApp Web
-driver.get('https://web.whatsapp.com/')
+message = """oii
+testee"""
+driver.get(
+    f'https://web.whatsapp.com/send?phone=5527996367021&text={quote(message)}'
+)
+
+
+def get_button():
+    while True:
+        try:
+            canvas = driver.find_element(
+                By.XPATH,
+                '/html/body/div[1]/div/div/div[2]/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[2]/button',
+            )
+            return canvas
+        except NoSuchElementException:
+            pass
+
+
+span = get_button()
+span.send_keys(Keys.ENTER)
 input()
 numero = driver.execute_script("return localStorage.getItem('last-wid-md');")
 
-print(numero)
 driver.quit()
 
 

@@ -8,8 +8,13 @@ django-htmx = "^1.19.0"
 pydantic-settings = "^2.4.0"
 django-cotton = "^0.9.35"
 django-widget-tweaks = "^1.5.0"
-selenium = "^4.24.0"
+selenium = "^4.25.0"
 qrcode = {extras = ["pil"], version = "^7.4.2"}
+celery = "^5.4.0"
+django-celery-beat = "^2.7.0"
+redis = "^5.1.0"
+webwhatsapi = "^2.0.5"
+django-import-export = "^4.1.1"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.6.4"
