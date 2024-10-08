@@ -47,7 +47,12 @@
 
                 <div class="flex flex-col gap-2">
 
-                    {% for chip in not_started_chips %}<c-dashboard.not-started-card :chip="chip" />{% endfor %}
+                    {% for chip in chips %}
+
+                        {% if chip.stage ==  StageChoices.NOT_STARTED %}<c-dashboard.not-started-card :chip="chip" />{% endif %}
+
+
+                    {% endfor %}
 
 
                 </div>
@@ -74,7 +79,11 @@
                 </div>
                 <div class="flex flex-col gap-2">
 
-                    {% for chip in started_chips %}<c-dashboard.in-heating-card :chip="chip" />{% endfor %}
+                    {% for chip in chips %}
+
+                        {% if chip.stage ==  StageChoices.STARTED %}<c-dashboard.in-heating-card :chip="chip" />{% endif %}
+
+                    {% endfor %}
 
 
                 </div>
@@ -100,7 +109,11 @@
                 </div>
                 <div class="flex flex-col gap-2">
 
-                    {% for chip in completed_chips %}<c-dashboard.completed-card :chip="chip" />{% endfor %}
+                    {% for chip in chips %}
+
+                        {% if chip.stage ==  StageChoices.COMPLETED %}<c-dashboard.completed-card :chip="chip" />{% endif %}
+
+                    {% endfor %}
 
 
                 </div>
@@ -124,7 +137,11 @@
                 </div>
                 <div class="flex flex-col gap-2">
 
-                    {% for chip in banned_chips %}<c-dashboard.banned-card :chip="chip" />{% endfor %}
+                    {% for chip in chips %}
+
+                        {% if chip.stage ==  StageChoices.BANNED %}<c-dashboard.banned-card :chip="chip" />{% endif %}
+
+                    {% endfor %}
 
 
                 </div>

@@ -37,6 +37,7 @@ class WhatsAppWeb:
         # self._profile.add_argument("--window-size=1920,1080")
         service = Service()
         self.driver = webdriver.Chrome(self._profile, service)
+        # self.driver.minimize_window()
         self.driver.set_script_timeout(500)
         self.driver.implicitly_wait(10)
 
@@ -105,7 +106,8 @@ class WhatsAppWeb:
         shutil.rmtree(self.profile_dir_path)
         yield True, 'QRcode expirado, tente novamente.'
 
-    def delete_unnecessary_in_default(self, directory):  # noqa: PLR6301
+    @classmethod
+    def delete_unnecessary_in_default(cls, directory):
         folders_to_keep = [
             'IndexedDB',
             'Local Storage',
@@ -130,11 +132,12 @@ class WhatsAppWeb:
             ):
                 os.remove(item_path)
 
-    def clean_browser_profile(self, directory):
+    @classmethod
+    def clean_browser_profile(cls, directory):
         for item in os.listdir(directory):
             item_path = os.path.join(directory, item)
             if item == 'Default':
-                self.delete_unnecessary_in_default(
+                cls.delete_unnecessary_in_default(
                     os.path.join(directory, 'Default')
                 )
             elif os.path.isdir(item_path):

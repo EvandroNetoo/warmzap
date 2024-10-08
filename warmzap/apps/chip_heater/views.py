@@ -3,6 +3,7 @@ import os
 import shutil
 from secrets import token_hex
 
+from asgiref.sync import sync_to_async
 from django.conf import settings
 from django.contrib import messages
 from django.core.files import File
@@ -20,12 +21,10 @@ from chip_heater.whatsapp_web import LoginQRCode, WhatsAppWeb
 class DashboardView(View):
     template_name = 'dashboard.html'
 
-    def get(self, request: HttpRequest):
+    async def get(self, request: HttpRequest):
         chips = Chip.objects.filter(user=request.user)
 
-        send_message_and_schedule_next(chips.first().id)
-
-        chips_counts = chips.aggregate(
+        chips_counts = await chips.aaggregate(
             not_started_count=Count(
                 'id', filter=Q(stage=Chip.StageChoices.NOT_STARTED)
             ),
@@ -37,20 +36,16 @@ class DashboardView(View):
             ),
             banned_count=Count('id', filter=Q(stage=Chip.StageChoices.BANNED)),
         )
-        not_started_chips = chips.filter(stage=Chip.StageChoices.NOT_STARTED)
-        started_chips = chips.filter(stage=Chip.StageChoices.STARTED)
-        completed_chips = chips.filter(stage=Chip.StageChoices.COMPLETED)
-        banned_chips = chips.filter(stage=Chip.StageChoices.BANNED)
 
         context = {
-            'not_started_chips': not_started_chips,
-            'started_chips': started_chips,
-            'completed_chips': completed_chips,
-            'banned_chips': banned_chips,
+            'StageChoices': Chip.StageChoices.NOT_STARTED,
+            'chips': chips,
             'chips_counts': chips_counts,
             'chip_form': ChipForm(),
         }
-        return render(request, self.template_name, context)
+        return await sync_to_async(render)(
+            request, self.template_name, context
+        )
 
 
 class MyChipsView(View):

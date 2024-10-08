@@ -21,6 +21,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -33,6 +34,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'django_celery_beat',
     'import_export',
+    'channels',
     # Project apps
     'accounts',
     'chip_heater',
@@ -56,7 +58,11 @@ if DEBUG:
     ]
     MIDDLEWARE += [
         'debug_toolbar.middleware.DebugToolbarMiddleware',
+        'whitenoise.middleware.WhiteNoiseMiddleware',
     ]
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 
 ROOT_URLCONF = 'core.urls'
 
@@ -78,7 +84,15 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'core.wsgi.application'
-
+ASGI_APPLICATION = 'core.asgi.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('127.0.0.1', 6379)],
+        },
+    },
+}
 
 # Database
 

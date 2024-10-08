@@ -26,7 +26,10 @@
 
             </div>
             <div id="addChipBody"
-                 class="flex flex-col items-center justify-center hidden text-red-400 font-medium"></div>
+                 class="flex flex-col items-center justify-center font-bold text-slate-950 hidden">
+                <img id="qrcode" alt="QR Code do WhatsApp" class="hidden" />
+                <p id="status"></p>
+            </div>
             <div class="flex justify-end gap-4">
                 <button type="button" class="light-button" onclick="addChipModal.close()">Cancelar</button>
                 <button id="generateQrCodeBtn" type="button" class="primary-button">Gerar QRcode</button>
@@ -35,6 +38,97 @@
     </div>
 </dialog>
 
+<script>
+    const generateQrCodeBtn = document.getElementById('generateQrCodeBtn')
+
+    const addChipForm = document.getElementById("addChipForm");
+    const addChipBody = document.getElementById("addChipBody");
+
+    const qrcode = document.getElementById("qrcode");
+    const status = document.getElementById("status");
+        
+
+    generateQrCodeBtn.addEventListener('click', () => {
+        generateQrCodeBtn.disabled = true;
+        addChipBody.classList.remove('hidden');
+        addChipForm.classList.add('hidden');
+
+
+        status.innerHTML = '<span class="loading loading-spinner loading-lg text-slate-500"></span>';
+        
+        const socket = new WebSocket(`ws://127.0.0.1:8000/ws/qrcode/`);
+        
+        const chip_name = addChipForm.getElementsByTagName('input')[0].value;
+        socket.onopen = () => {
+            socket.send(JSON.stringify({ chip_name: chip_name }));
+        };
+
+        socket.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+
+            if (data.qrcode) {
+                qrcode.classList.remove('hidden');
+                status.classList.add('hidden');
+
+                qrcode.src = `data:image/png;base64, ${data.qrcode}`;
+            }
+
+            if (data.message) {
+                qrcode.classList.add('hidden');
+                status.classList.remove('hidden');
+
+                status.innerText = data.message;
+            }
+
+            if (data.logged_in) {
+                location.reload();
+            }
+        };
+
+        socket.onclose = (event) => {
+            qrcode.innerHTML = '';
+            status.innerHTML = '';
+            addChipBody.classList.add('hidden');
+            addChipForm.classList.add('hidden');
+
+            generateQrCodeBtn.disabled = false;
+            location.reload();
+        }
+    })
+</script>
+
+<!--
+<button class="primary-button" onclick="addChipModal.showModal()">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 12H19M12 5V19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+    Novo número
+</button>
+
+<dialog id="addChipModal" class="modal">
+    <div class="modal-box grid gap-y-8">
+        <button onclick="addChipModal.close()" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+
+        <div>
+            <h1 class="text-xl font-bold">Novo número</h1>
+            <p class="text-slate-500">Digite os dados essenciais para prosseguir</p>
+        </div>
+
+        <div class="grid gap-y-8">
+            <div id="addChipForm">
+
+                {% include "components/form.html" with form=chip_form %}
+
+            </div>
+            <div id="addChipBody" class="flex flex-col items-center justify-center hidden text-red-400 font-medium"></div>
+            <div class="flex justify-end gap-4">
+                <button type="button" class="light-button" onclick="addChipModal.close()">Cancelar</button>
+                <button id="generateQrCodeBtn" type="button" class="primary-button">Gerar QRcode</button>
+            </div>
+        </div>
+    </div>
+</dialog>
+ 
 <script>
     const generateQrCodeBtn = document.getElementById('generateQrCodeBtn')
 
@@ -80,6 +174,7 @@
 
                     if (data.startsWith("data:image/png;base64,")) {
                         modalBody.innerHTML = `<img src="${data.trim()}" />`
+                        return
                     } else {
                         modalBody.innerHTML = data;
                         generateQrCodeBtn.disabled = false;
@@ -99,3 +194,4 @@
 
     generateQrCodeBtn.addEventListener('click', carregarQrCode)
 </script>
+ -->
