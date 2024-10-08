@@ -31,7 +31,10 @@
                 <p id="status"></p>
             </div>
             <div class="flex justify-end gap-4">
-                <button type="button" class="light-button" onclick="addChipModal.close()">Cancelar</button>
+                <button id="cancelQrCodeBtn"
+                        type="button"
+                        class="light-button"
+                        onclick="addChipModal.close()">Cancelar</button>
                 <button id="generateQrCodeBtn" type="button" class="primary-button">Gerar QRcode</button>
             </div>
         </div>
@@ -39,62 +42,84 @@
 </dialog>
 
 <script>
-    const generateQrCodeBtn = document.getElementById('generateQrCodeBtn')
+    document.addEventListener("DOMContentLoaded", function() {
+        const generateQrCodeBtn = document.getElementById('generateQrCodeBtn');
+        const cancelQrCodeBtn = document.getElementById('cancelQrCodeBtn');
+        const addChipForm = document.getElementById("addChipForm");
+        const addChipBody = document.getElementById("addChipBody");
+        const qrcode = document.getElementById("qrcode");
+        const status = document.getElementById("status");
 
-    const addChipForm = document.getElementById("addChipForm");
-    const addChipBody = document.getElementById("addChipBody");
+        let socket;
 
-    const qrcode = document.getElementById("qrcode");
-    const status = document.getElementById("status");
+        function toggleView(loading = true) {
+            if (loading) {
+                generateQrCodeBtn.disabled = true;
+                addChipBody.classList.remove('hidden');
+                addChipForm.classList.add('hidden');
+                status.innerHTML = '<span class="loading loading-spinner loading-lg text-slate-500"></span>';
+            } else {
+                qrcode.classList.add('hidden');
+                status.classList.add('hidden');
+                addChipBody.classList.add('hidden');
+                addChipForm.classList.remove('hidden');
+                generateQrCodeBtn.disabled = false;
+            }
+        }
 
-
-    generateQrCodeBtn.addEventListener('click', () => {
-        generateQrCodeBtn.disabled = true;
-        addChipBody.classList.remove('hidden');
-        addChipForm.classList.add('hidden');
-
-
-        status.innerHTML = '<span class="loading loading-spinner loading-lg text-slate-500"></span>';
-
-        const socket = new WebSocket(`ws://127.0.0.1:8000/ws/qrcode/`);
-
-        const chip_name = addChipForm.getElementsByTagName('input')[0].value;
-        socket.onopen = () => {
-            socket.send(JSON.stringify({
-                chip_name: chip_name
-            }));
-        };
-
-        socket.onmessage = function(event) {
+        function handleSocketMessage(event) {
             const data = JSON.parse(event.data);
 
             if (data.qrcode) {
                 qrcode.classList.remove('hidden');
                 status.classList.add('hidden');
-
                 qrcode.src = `data:image/png;base64, ${data.qrcode}`;
             }
 
             if (data.message) {
                 qrcode.classList.add('hidden');
                 status.classList.remove('hidden');
-
                 status.innerText = data.message;
             }
 
             if (data.logged_in) {
                 location.reload();
             }
-        };
+        }
 
-        socket.onclose = (event) => {
+        function handleSocketClose() {
             qrcode.innerHTML = '';
             status.innerHTML = '';
-            addChipBody.classList.add('hidden');
-            addChipForm.classList.add('hidden');
-
-            generateQrCodeBtn.disabled = false;
-            location.reload();
+            toggleView(false);
         }
-    })
+
+        function handleSocketError(error) {
+            status.innerHTML = 'Erro na conexão com o servidor. Tente novamente mais tarde.';
+            toggleView(false);
+        }
+
+        generateQrCodeBtn.addEventListener('click', () => {
+            toggleView(true);
+
+            const chip_name = addChipForm.getElementsByTagName('input')[0].value;
+            socket = new WebSocket(`ws://127.0.0.1:8000/ws/qrcode/`);
+
+            socket.onopen = () => {
+                socket.send(JSON.stringify({
+                    chip_name: chip_name
+                }));
+            };
+
+            socket.onmessage = handleSocketMessage;
+            socket.onclose = handleSocketClose;
+            socket.onerror = handleSocketError;
+        });
+
+        cancelQrCodeBtn.addEventListener('click', () => {
+            if (socket && socket.readyState === WebSocket.OPEN) {
+                socket.close();
+            }
+            toggleView(false);
+        });
+    });
 </script>

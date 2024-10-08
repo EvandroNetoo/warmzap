@@ -26,18 +26,22 @@ class QRCodeConsumer(AsyncWebsocketConsumer):
             return
         await self.accept()
 
-    async def disconnect(self, close_code):
-        await self.cleanup_resources()
-
     async def receive(self, text_data):
         data = json.loads(text_data)
         self.chip_name = data.get('chip_name')
-        await self.run_qrcode_process()
+        try:
+            await self.run_qrcode_process()
+        finally:
+            await self.cleanup_resources()
         await self.close()
+
+    async def disconnect(self, code):
+        await self.cleanup_resources()
 
     async def run_qrcode_process(self):
         self.setup_selenium()
         await self.access_whatsapp_web()
+        print(self.driver.page_source)
         canvas = await self.get_qrcode_canvas()
 
         if not canvas:
@@ -61,12 +65,15 @@ class QRCodeConsumer(AsyncWebsocketConsumer):
         await self.check_login_status()
 
     def setup_selenium(self):
+        from webdriver_manager.chrome import ChromeDriverManager
+        from webdriver_manager.core.os_manager import ChromeType
         self.profile_dir_path = f'wpp_sessions/{token_hex(16)}'
         options = Options()
         options.add_argument(f'user-data-dir={self.profile_dir_path}')
         options.add_argument('--no-sandbox')
         options.add_argument('disable-dev-shm-usage')
-        service = Service()
+        options.add_argument('--headless=new')
+        service = Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
         self.driver = webdriver.Chrome(service=service, options=options)
         self.driver.set_script_timeout(500)
         self.driver.implicitly_wait(10)
