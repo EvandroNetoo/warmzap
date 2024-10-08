@@ -14,9 +14,3 @@ urlpatterns = [
         name='my_chips',
     ),
 ]
-
-htmx_urls = [
-    path('generate-qrcode/', views.generate_qrcode, name='generate_qrcode'),
-]
-
-urlpatterns += htmx_urls

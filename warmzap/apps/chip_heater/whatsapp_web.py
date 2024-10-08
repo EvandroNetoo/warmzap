@@ -1,13 +1,10 @@
 import os
 import shutil
 from dataclasses import dataclass
-from datetime import timedelta
 from time import sleep
 from urllib.parse import quote
 
-from django.utils import timezone
 from selenium import webdriver
-from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
@@ -55,56 +52,6 @@ class WhatsAppWeb:
                 self._SELECTORS['mainPage'],
             ))
         )
-
-    def generate_login_qrcode(self, directory_token, profile_dir_path):
-        self.directory_token = directory_token
-        self.profile_dir_path = profile_dir_path
-
-        # def get_canvas():
-        #     while True:
-        #         try:
-        #             canvas = self.driver.find_element(
-        #                 By.XPATH,
-        #                 '/html/body/div[1]/div/div/div[2]/div[3]/div[1]/div/div/div[2]/div/canvas',
-        #             )
-        #             return canvas
-        #         except NoSuchElementException:
-        #             pass
-
-        try:
-            canvas = WebDriverWait(self.driver, 10).until(
-                EC.visibility_of_element_located((
-                    By.XPATH,
-                    '/html/body/div[1]/div/div/div[2]/div[3]/div[1]/div/div/div[2]/div/canvas',
-                ))
-            )
-        except TimeoutException:
-            yield True, 'Ocorreu um erro, tente novamente'
-            return
-
-        b64_qrcode = self.driver.execute_script(
-            "return arguments[0].toDataURL('image/png').substring(21);", canvas
-        )
-
-        yield False, LoginQRCode(b64_qrcode, self.directory_token)
-
-        start_datetime = timezone.now()
-
-        while start_datetime + timedelta(seconds=50) > timezone.now():
-            number = self.driver.execute_script(
-                "return localStorage.getItem('last-wid-md');"
-            )
-            if number:
-                yield False, None
-                self.wait_for_login(60)
-                self.driver.quit()
-                self.clean_browser_profile(self.profile_dir_path)
-                yield number.split(':')[0][1:]
-                return
-
-        self.driver.quit()
-        shutil.rmtree(self.profile_dir_path)
-        yield True, 'QRcode expirado, tente novamente.'
 
     @classmethod
     def delete_unnecessary_in_default(cls, directory):

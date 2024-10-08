@@ -81,7 +81,9 @@
 
                     {% for chip in chips %}
 
+
                         {% if chip.stage ==  StageChoices.STARTED %}<c-dashboard.in-heating-card :chip="chip" />{% endif %}
+
 
                     {% endfor %}
 
@@ -111,7 +113,9 @@
 
                     {% for chip in chips %}
 
+
                         {% if chip.stage ==  StageChoices.COMPLETED %}<c-dashboard.completed-card :chip="chip" />{% endif %}
+
 
                     {% endfor %}
 
@@ -139,7 +143,9 @@
 
                     {% for chip in chips %}
 
+
                         {% if chip.stage ==  StageChoices.BANNED %}<c-dashboard.banned-card :chip="chip" />{% endif %}
+
 
                     {% endfor %}
 
