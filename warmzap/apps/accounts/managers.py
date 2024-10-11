@@ -1,6 +1,8 @@
 from typing import Any
 
+from chip_heater.models import Chip
 from django.contrib.auth.models import BaseUserManager
+from django.db.models import Count, Q
 
 
 class UserManager(BaseUserManager):
@@ -40,3 +42,15 @@ class UserManager(BaseUserManager):
             raise ValueError('Super User must have is_superuser=True')
 
         return self._create_user(email, password, **extra_fields)
+
+    def get_queryset(self):
+        return (
+            super()
+            .get_queryset()
+            .prefetch_related('chips')
+            .annotate(
+                qtd_started_chip=Count(
+                    'chips', filter=Q(chips__stage=Chip.StageChoices.STARTED)
+                )
+            )
+        )

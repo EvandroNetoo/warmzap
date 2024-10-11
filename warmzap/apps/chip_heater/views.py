@@ -1,10 +1,9 @@
-from asgiref.sync import sync_to_async
 from django.db.models import Count, Q
 from django.http import HttpRequest
 from django.shortcuts import render
 from django.views import View
 
-from chip_heater.forms import ChipForm
+from chip_heater.forms import ChipForm, StartHeatingForm
 from chip_heater.models import Chip
 
 
@@ -28,19 +27,24 @@ class DashboardView(View):
         )
 
         context = {
-            'StageChoices': Chip.StageChoices.NOT_STARTED,
-            'chips': chips,
+            'StageChoices': Chip.StageChoices,
+            'chips': [chip async for chip in chips],
             'chips_counts': chips_counts,
             'chip_form': ChipForm(),
         }
-        return await sync_to_async(render)(
-            request, self.template_name, context
-        )
+        return render(request, self.template_name, context)
 
 
 class MyChipsView(View):
     template_name = 'my_chips.html'
 
-    def get(self, request: HttpRequest):
-        context = {}
+    async def get(self, request: HttpRequest):
+        chips = Chip.objects.filter(user=request.user)
+
+        context = {
+            'StageChoices': Chip.StageChoices,
+            'chips': [chip async for chip in chips],
+            'chip_form': ChipForm(),
+            'start_heating_form': StartHeatingForm(),
+        }
         return render(request, self.template_name, context)

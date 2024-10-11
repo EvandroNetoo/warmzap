@@ -30,7 +30,7 @@ class WhatsAppWeb:
         self._profile.add_argument(f'user-data-dir={profile}')
         self._profile.add_argument('--no-sandbox')
         self._profile.add_argument('disable-dev-shm-usage')
-        # self._profile.add_argument('--headless=new')
+        self._profile.add_argument('--headless=new')
         # self._profile.add_argument("--window-size=1920,1080")
         service = Service()
         self.driver = webdriver.Chrome(self._profile, service)

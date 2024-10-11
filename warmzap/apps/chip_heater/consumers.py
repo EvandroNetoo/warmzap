@@ -33,7 +33,10 @@ class QRCodeConsumer(AsyncWebsocketConsumer):
             await self.run_qrcode_process()
         finally:
             await self.cleanup_resources()
-        await self.close()
+        try:
+            await self.close()
+        except Exception:
+            ...
 
     async def disconnect(self, code):
         await self.cleanup_resources()
@@ -41,7 +44,7 @@ class QRCodeConsumer(AsyncWebsocketConsumer):
     async def run_qrcode_process(self):
         self.setup_selenium()
         await self.access_whatsapp_web()
-        print(self.driver.page_source)
+
         canvas = await self.get_qrcode_canvas()
 
         if not canvas:
@@ -61,22 +64,18 @@ class QRCodeConsumer(AsyncWebsocketConsumer):
             )
             return
 
-        await self.sync_data(number)
         await self.check_login_status()
+        await self.sync_data(number)
 
     def setup_selenium(self):
-        from webdriver_manager.chrome import ChromeDriverManager
-        from webdriver_manager.core.os_manager import ChromeType
         self.profile_dir_path = f'wpp_sessions/{token_hex(16)}'
         options = Options()
         options.add_argument(f'user-data-dir={self.profile_dir_path}')
-        options.add_argument('--no-sandbox')
-        options.add_argument('disable-dev-shm-usage')
+        # options.add_argument('--no-sandbox')
+        # options.add_argument('disable-dev-shm-usage')
         options.add_argument('--headless=new')
-        service = Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
+        service = Service()
         self.driver = webdriver.Chrome(service=service, options=options)
-        self.driver.set_script_timeout(500)
-        self.driver.implicitly_wait(10)
 
     async def access_whatsapp_web(self):
         self.driver.get('https://web.whatsapp.com/')
@@ -118,12 +117,9 @@ class QRCodeConsumer(AsyncWebsocketConsumer):
             now = datetime.now()
             await asyncio.sleep(0.5)
 
-        return number.split('@')[0] if number else None
+        return number.split(':')[0][1:] if number else None
 
     async def sync_data(self, number: str):
-        await self.send(
-            text_data=json.dumps({'message': 'Sincronizando dados...'})
-        )
         chip_instance = Chip(
             name=self.chip_name, number=number, user=self.user
         )
@@ -142,6 +138,10 @@ class QRCodeConsumer(AsyncWebsocketConsumer):
         shutil.rmtree(self.profile_dir_path)
 
     async def check_login_status(self):
+        await self.send(
+            text_data=json.dumps({'message': 'Sincronizando dados...'})
+        )
+
         timeout = 90
         end = datetime.now() + timedelta(seconds=timeout)
         now = datetime.now()

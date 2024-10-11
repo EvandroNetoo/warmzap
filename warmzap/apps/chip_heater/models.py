@@ -3,7 +3,6 @@ import shutil
 import zipfile
 from secrets import token_hex
 
-from accounts.models import User
 from django.conf import settings
 from django.core.files.storage import default_storage
 from django.core.validators import FileExtensionValidator
@@ -20,7 +19,7 @@ class Chip(models.Model):
         BANNED = 'BN', 'Banido'
 
     user = models.ForeignKey(
-        User,
+        'accounts.user',
         models.CASCADE,
         related_name='chips',
         verbose_name='usuário',
@@ -42,6 +41,11 @@ class Chip(models.Model):
         choices=StageChoices.choices,
         default=StageChoices.NOT_STARTED,
     )
+
+    days_to_heat = models.PositiveIntegerField(
+        'dias para aquecer', null=True, blank=True
+    )
+    heated_days = models.PositiveIntegerField('dias aquecidos', default=0)
 
     class Meta:
         verbose_name = 'chip'

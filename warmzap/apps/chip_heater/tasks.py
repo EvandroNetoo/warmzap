@@ -10,22 +10,29 @@ from chip_heater.models import Chip, Message
 
 
 @shared_task
-def send_message_and_schedule_next(chip_id: int):
-    chip = Chip.objects.get(id=chip_id)
+def send_message_and_schedule_next(chip_pk: str):
+    chip = Chip.objects.get(id=chip_pk)
 
     next_message_time = timezone.now() + timedelta(seconds=randint(30, 180))  # noqa: S311
-    start_hour = 0
-    end_hour = 0
+    start_hour = 8
+    end_hour = 21
     if start_hour > next_message_time.hour >= end_hour:
         next_message_time = (timezone.now() + timedelta(days=1)).replace(
-            hour=8
+            hour=8 + 3  # SP timezone
         )
+        chip.heated_days += 1
+
+        if chip.heated_days == chip.days_to_heat:
+            chip.stage = chip.StageChoices.COMPLETED
+
+        chip.save()
+
     schedule = ClockedSchedule.objects.create(clocked_time=next_message_time)
     PeriodicTask.objects.create(
         clocked=schedule,
-        name=f'mensagem {chip.id} {chip.name} {next_message_time}',
+        name=f'mensagem {chip.pk} {chip.name} {next_message_time}',
         task='chip_heater.tasks.send_message_and_schedule_next',
-        args=json.dumps([chip.id]),
+        args=json.dumps([chip.pk]),
         one_off=True,
     )
 

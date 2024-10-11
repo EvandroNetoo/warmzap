@@ -63,10 +63,10 @@ class SignUpForm(forms.ModelForm, SetPasswordMixin):
                 'placeholder': placeholders.get(field_name),
             })
 
-    def save(self, commit: bool = True) -> Any:
+    async def asave(self, commit: bool = True) -> Any:
         user = super().save(False)
         user.set_password(self.cleaned_data['password1'])
-        user.save(commit)
+        await user.asave(commit)
         return user
 
 

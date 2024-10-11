@@ -19,6 +19,7 @@ channels-redis = "^4.2.0"
 channels = "^4.1.0"
 uvicorn = "^0.31.0"
 daphne = "^4.1.2"
+webdriver-manager = "^4.0.2"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.6.4"
@@ -33,6 +34,9 @@ format = 'ruff check . --fix && ruff format . && djlint . --reformat --quiet'
 run = 'python warmzap/manage.py runserver'
 makemigrations = 'python warmzap/manage.py makemigrations'
 migrate = 'python warmzap/manage.py migrate'
+runworker = 'celery -A core worker -l info'
+runbeatdjango = 'celery -A core beat -S django -l info'
+runbeat = 'celery -A core beat -S django -l info'
 
 [tool.djlint]
 max_blank_lines = 1

@@ -25,6 +25,23 @@ html {
   box-sizing: border-box;
 }
 
+.sidebar::-webkit-scrollbar {
+  width: 2px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background-color: green;
+  border-radius: 10px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+/* Para o Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: green transparent;
+}
 .sidebar {
   position: fixed; /* Alterado de sticky para fixed */
   top: 0;
@@ -37,6 +54,7 @@ html {
   flex-direction: column;
   background: var(--sidebar-background);
   transition-duration: 100ms;
+  overflow-y: scroll;
 }
 
 body {
@@ -357,16 +375,17 @@ body.collapsed .logout {
 /*? Expand button */
 
 .expand-btn {
-  position: absolute;
+  position: fixed;
   display: grid;
   place-items: center;
   cursor: pointer;
   background: var(--expand-button);
-  z-index: 2;
-  right: -1.125rem;
+  z-index: 1001;
+  left: 16.875rem;
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 50%;
+  transition: 100ms;
 }
 
 .expand-btn svg {
@@ -374,6 +393,10 @@ body.collapsed .logout {
   stroke: var(--white);
   width: 1.25rem;
   height: 1.25rem;
+}
+
+body.collapsed .expand-btn {
+  left: 3.875rem;
 }
 
 body.collapsed .expand-btn svg {

@@ -13,4 +13,9 @@ urlpatterns = [
         views.SignUpView.as_view(),
         name='signup',
     ),
+    path(
+        'signout/',
+        views.SignOutView.as_view(),
+        name='signout',
+    ),
 ]

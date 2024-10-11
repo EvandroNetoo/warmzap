@@ -1,3 +1,5 @@
+{% load utils %}
+
 <div style="border-color: var(--color-primary-100);
             background-color: var(--color-primary-50)"
      class="p-4 gap-4 grid border rounded-lg">
@@ -17,17 +19,14 @@
             </div>
         </div>
         <div class="grid grid-cols-2 gap-2 items-center">
-            <progress value="10" max="15"></progress>
-            <p class="text-center text-slate-900 font-medium text-sm whitespace-nowrap">Restam 3 dias</p>
+            <progress value="{{ chip.heated_days }}" max="{{ chip.days_to_heat }}"></progress>
+            <p class="text-center text-slate-900 font-medium text-sm whitespace-nowrap">
+                Restam {{ chip.days_to_heat|sub:chip.heated_days }} dias
+            </p>
         </div>
     </div>
     <div id="card-{{ chip.id }}" class="hidden">
         <c-dashboard.phone-infos />
-
-        <div class="mt-4">
-            <p class="text-slate-500">Fase atual</p>
-            <p class="text-slate-900">Fazendo ligações</p>
-        </div>
     </div>
 
 </div>

@@ -1,0 +1,58 @@
+<div class="flex flex-col rounded-lg border-slate-200 border font-medium overflow-hidden">
+
+    <div class="flex flex-col gap-4 p-4">
+        <div class="flex gap-2">
+            <svg width="24"
+                 height="24"
+                 viewBox="0 0 24 24"
+                 fill="none"
+                 xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 18H12.01M7 2H17C18.1046 2 19 2.89543 19 4V20C19 21.1046 18.1046 22 17 22H7C5.89543 22 5 21.1046 5 20V4C5 2.89543 5.89543 2 7 2Z" stroke="#0F172A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            {{ chip.name }}
+        </div>
+
+        <div>
+            <p class="text-slate-500">Número</p>
+            <div class="flex justify-between align-center">
+                <p class="text-slate-900">{{ chip.formated_number }}</p>
+                <button onclick="navigator.clipboard.writeText('{{ chip.formated_number }}')">
+                    <c-svg.copy />
+                </button>
+            </div>
+        </div>
+
+        <div>
+            <p class="text-slate-500">Status</p>
+            <div class="border inline-flex gap-2 items-center justify-center rounded-full px-2.5 py-0.5"
+                 style="border-color: var(--color-primary-400);
+                        color: var(--color-primary-400)">
+                <svg width="12"
+                     height="12"
+                     viewBox="0 0 12 12"
+                     fill="none"
+                     xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4.25 7.25C4.58152 7.25 4.89946 7.1183 5.13388 6.88388C5.3683 6.64946 5.5 6.33152 5.5 6C5.5 5.31 5.25 5 5 4.5C4.464 3.4285 4.888 2.473 6 1.5C6.25 2.75 7 3.95 8 4.75C9 5.55 9.5 6.5 9.5 7.5C9.5 7.95963 9.40947 8.41475 9.23358 8.83939C9.05769 9.26403 8.79988 9.64987 8.47487 9.97487C8.14987 10.2999 7.76403 10.5577 7.33939 10.7336C6.91475 10.9095 6.45963 11 6 11C5.54037 11 5.08525 10.9095 4.66061 10.7336C4.23597 10.5577 3.85013 10.2999 3.52513 9.97487C3.20012 9.64987 2.94231 9.26403 2.76642 8.83939C2.59053 8.41475 2.5 7.95963 2.5 7.5C2.5 6.9235 2.7165 6.353 3 6C3 6.33152 3.1317 6.64946 3.36612 6.88388C3.60054 7.1183 3.91848 7.25 4.25 7.25Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" />
+                </svg>
+
+                <span class="text-xs font-semibold">Em aquecimento</span>
+
+            </div>
+        </div>
+
+    </div>
+
+    <button class="flex gap-2 py-1.5 px-4 items-center justify-center opacity-50 h-12"
+            style="color: var(--color-primary-400);
+                   background-color: var(--color-primary-50)">
+        <svg width="24"
+             height="24"
+             viewBox="0 0 24 24"
+             fill="none"
+             xmlns="http://www.w3.org/2000/svg">
+            <path d="M8.5 14.5C9.16304 14.5 9.79893 14.2366 10.2678 13.7678C10.7366 13.2989 11 12.663 11 12C11 10.62 10.5 10 10 9C8.928 6.857 9.776 4.946 12 3C12.5 5.5 14 7.9 16 9.5C18 11.1 19 13 19 15C19 15.9193 18.8189 16.8295 18.4672 17.6788C18.1154 18.5281 17.5998 19.2997 16.9497 19.9497C16.2997 20.5998 15.5281 21.1154 14.6788 21.4672C13.8295 21.8189 12.9193 22 12 22C11.0807 22 10.1705 21.8189 9.32122 21.4672C8.47194 21.1154 7.70026 20.5998 7.05025 19.9497C6.40024 19.2997 5.88463 18.5281 5.53284 17.6788C5.18106 16.8295 5 15.9193 5 15C5 13.847 5.433 12.706 6 12C6 12.663 6.26339 13.2989 6.73223 13.7678C7.20107 14.2366 7.83696 14.5 8.5 14.5Z" stroke="#FD6B3C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+
+        Aguarde
+    </button>
+</div>

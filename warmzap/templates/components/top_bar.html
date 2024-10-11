@@ -44,10 +44,8 @@
             <ul tabindex="0"
                 class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
                 <li>
-                    <a>1</a>
-                </li>
-                <li>
-                    <a>2</a>
+                    <a hx-post="{% url 'signout' %}"
+                       hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>Sair</a>
                 </li>
             </ul>
         </div>

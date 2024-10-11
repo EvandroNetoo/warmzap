@@ -1,6 +1,6 @@
 from django.urls import path
 
-from chip_heater import views
+from chip_heater import htmx_views, views
 
 urlpatterns = [
     path(
@@ -14,3 +14,14 @@ urlpatterns = [
         name='my_chips',
     ),
 ]
+
+
+htmx_urls = [
+    path(
+        'start-heating/<str:chip_pk>/',
+        htmx_views.StartHeatingView.as_view(),
+        name='start_heating',
+    )
+]
+
+urlpatterns += htmx_urls

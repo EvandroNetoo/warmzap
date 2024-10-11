@@ -1,3 +1,4 @@
+from chip_heater.models import Chip
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.core.validators import (
     MinLengthValidator,
@@ -48,5 +49,11 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     objects = UserManager()
 
+    chips: models.QuerySet[Chip]
+
     def __str__(self) -> str:
         return self.email
+
+    @property
+    def started_chips_limit(self) -> int:
+        return 3  # TODO

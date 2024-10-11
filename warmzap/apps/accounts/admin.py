@@ -28,6 +28,17 @@ class UserAdmin(auth_admin.UserAdmin):
             },
         ),
         (
+            'Outras informações',
+            {
+                'fields': (
+                    'name',
+                    'surname',
+                    'instagram',
+                    'cellphone',
+                )
+            },
+        ),
+        (
             'Permissões',
             {
                 'fields': (

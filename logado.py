@@ -11,7 +11,7 @@ from selenium.webdriver.common.keys import Keys
 
 # Use o mesmo perfil de usuário do Chrome
 chrome_options = Options()
-pasta = '/home/evandro/Desktop/warmzap/warmzap/media/browser_profiles/c2efe906eca146148585eeef6716fb14'
+pasta = 'testesession'
 chrome_options.add_argument(f'user-data-dir={pasta}')
 
 # Inicie o WebDriver com o perfil de usuário

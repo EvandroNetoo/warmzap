@@ -122,8 +122,9 @@
                         Plano STANDARD
                     </div>
                     <div class="bg-secondary-950 rounded-lg p-4 text-sm">
-                        <progress value="10" max="15"></progress>
-                        <p>10 de 15 números aquecidos</p>
+                        <progress value="{{ request.user.qtd_started_chip }}"
+                                  max="{{ request.user.started_chips_limit }}"></progress>
+                        <p>{{ request.user.qtd_started_chip }} de {{ request.user.started_chips_limit }} números aquecidos</p>
                     </div>
                 </div>
             </div>

@@ -33,7 +33,27 @@
                    placeholder="Pesquise por código ou número...">
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-5 items-start"></div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-5 items-start">
+
+            {% for chip in chips %}
+
+                {% if chip.stage == StageChoices.NOT_STARTED %}
+
+                    <c-my-chips.not-started-card :card="card" />
+
+                {% elif chip.stage == StageChoices.STARTED %}
+
+                    <c-my-chips.in-heating-card :card="card" />
+
+                {% elif chip.stage == StageChoices.COMPLETED %}
+
+                    <c-my-chips.completed-card :card="card" />
+
+                {% endif %}
+
+            {% endfor %}
+
+        </div>
     </div>
 
 {% endblock body %}

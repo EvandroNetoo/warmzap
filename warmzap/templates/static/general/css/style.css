@@ -7,6 +7,7 @@
     --color-primary-500: #FB4314;
     --color-secondary-50: #EBFEF6;
     --color-secondary-200: #A0FAD7;
+    --color-secondary-400: #1ED8A0;
     --color-secondary-500: #01C893;
     --color-secondary-600: #00A378;
     --color-secondary-900: #005443;
@@ -19,6 +20,10 @@
     --tw-color-slate-900: #0f172a;
     --tw-color-secondary: #9333ea;
   }
+
+.bg-secondary-500 {
+    background-color: var(--color-secondary-500);
+}
 
 .bg-secondary-950 {
     background-color: var(--color-secondary-950);
