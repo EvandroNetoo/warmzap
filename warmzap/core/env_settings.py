@@ -1,14 +1,12 @@
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from typing import Optional
+
+from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(
-        env_file='.env',
-        env_file_encoding='utf-8',
-    )
-
     SECRET_KEY: str
     DEBUG: bool
+    ASAAS_ACCESS_TOKEN: Optional[str]
 
 
 env_settings = Settings()

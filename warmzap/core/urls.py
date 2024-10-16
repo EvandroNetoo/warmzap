@@ -9,6 +9,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
     path('', include('chip_heater.urls')),
+    path('settings/', include('settings.urls')),
+    path('payments/', include('payments.urls')),
 ]
 
 

@@ -39,6 +39,17 @@ class UserAdmin(auth_admin.UserAdmin):
             },
         ),
         (
+            'Dados de pagamento',
+            {
+                'fields': (
+                    'subscription_plan',
+                    'cpf',
+                    'asaas_customer_id',
+                    'asaas_subscription_id',
+                )
+            },
+        ),
+        (
             'Permissões',
             {
                 'fields': (

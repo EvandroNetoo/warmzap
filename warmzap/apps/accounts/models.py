@@ -6,8 +6,14 @@ from django.core.validators import (
     validate_email,
 )
 from django.db import models
+from payments.subscription_plans import (
+    SUBSCRIPTION_PLANS_SETTINGS,
+    SubscriptionPlan,
+    SubscriptionPlanChoices,
+)
 
 from accounts.managers import UserManager
+from accounts.validators import validate_cpf
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -26,13 +32,35 @@ class User(AbstractBaseUser, PermissionsMixin):
     instagram = models.CharField(
         'instagram',
         max_length=50,
-        unique=True,
         validators=[MinLengthValidator(3)],
     )
     cellphone = models.CharField(
         'telefone',
         max_length=15,
         validators=[RegexValidator(r'^\(\d{2}\) \d{4,5}-\d{4}$')],
+    )
+    cpf = models.CharField(
+        'CPF',
+        max_length=14,
+        blank=True,
+        validators=[
+            RegexValidator(r'^\d{3}\.\d{3}\.\d{3}-\d{2}$'),
+            validate_cpf,
+        ],
+    )
+
+    subscription_plan = models.CharField(
+        'plano de assinatura',
+        max_length=20,
+        choices=SubscriptionPlanChoices.choices,
+        default=SubscriptionPlanChoices.NO_PLAN,
+    )
+
+    asaas_customer_id = models.CharField(
+        'ID do cliente', max_length=50, blank=True
+    )
+    asaas_subscription_id = models.CharField(
+        'ID da assinatura', max_length=50, blank=True
     )
 
     is_staff = models.BooleanField('status de staff', default=False)
@@ -55,5 +83,13 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.email
 
     @property
+    def full_name(self) -> str:
+        return f'{self.name} {self.surname}'
+
+    @property
     def started_chips_limit(self) -> int:
-        return 3  # TODO
+        return self.subscription_plan_settings.chips_limit
+
+    @property
+    def subscription_plan_settings(self) -> SubscriptionPlan:
+        return SUBSCRIPTION_PLANS_SETTINGS[self.subscription_plan]

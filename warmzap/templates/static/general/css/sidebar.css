@@ -54,7 +54,8 @@ html {
   flex-direction: column;
   background: var(--sidebar-background);
   transition-duration: 100ms;
-  overflow-y: scroll;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 body {

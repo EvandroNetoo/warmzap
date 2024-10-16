@@ -25,12 +25,12 @@ expand_btn.addEventListener("click", () => {
 function handleResize() {
     const body = document.body;
 
-    if (window.innerWidth < 640) {
-        // Se a tela for menor que 640px, adiciona a classe 'collapsed'
+    if (window.innerWidth < 1024) {
+        // Se a tela for menor que 1024px, adiciona a classe 'collapsed'
         body.classList.add('collapsed');
         setSidebarCollapsedCookie();
     } else {
-        // Se a tela for maior que 640px, remove a classe 'collapsed'
+        // Se a tela for maior que 1024px, remove a classe 'collapsed'
         body.classList.remove('collapsed');
         flushSidebarCollapsedCookie();
     }

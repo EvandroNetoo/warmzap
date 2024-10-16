@@ -125,6 +125,17 @@
     outline: none; 
 }
 
+.form-input:disabled{
+    background-color: var(--tw-color-slate-100);
+    color: var(--tw-color-slate-500);
+    border-color: var(--tw-color-slate-300);
+    cursor: not-allowed;
+}
+
+.form-input:disabled::placeholder {
+    color: var(--tw-color-slate-400);
+}
+
 progress {
     border-radius: 4px; 
     width: 100%;

@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     # Project apps
     'accounts',
     'chip_heater',
+    'settings',
+    'payments',
 ]
 
 MIDDLEWARE = [
@@ -49,7 +51,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.LoginRequiredMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django_htmx.middleware.HtmxMiddleware',
 ]
 
 if DEBUG:
@@ -169,6 +170,13 @@ INTERNAL_IPS = ['127.0.0.1']
 
 
 # Celery
+
+
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
+
+
+# Asaas
+
+ASAAS_ACCESS_TOKEN = env_settings.ASAAS_ACCESS_TOKEN
