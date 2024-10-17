@@ -44,8 +44,8 @@ class UserAdmin(auth_admin.UserAdmin):
                 'fields': (
                     'subscription_plan',
                     'cpf',
-                    'asaas_customer_id',
-                    'asaas_subscription_id',
+                    'asaas_customer',
+                    'asaas_subscription',
                 )
             },
         ),

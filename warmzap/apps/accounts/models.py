@@ -56,11 +56,9 @@ class User(AbstractBaseUser, PermissionsMixin):
         default=SubscriptionPlanChoices.NO_PLAN,
     )
 
-    asaas_customer_id = models.CharField(
-        'ID do cliente', max_length=50, blank=True
-    )
-    asaas_subscription_id = models.CharField(
-        'ID da assinatura', max_length=50, blank=True
+    asaas_customer = models.JSONField('clinte do asaas', blank=True, null=True)
+    asaas_subscription = models.JSONField(
+        'assinatura do asaas', blank=True, null=True
     )
 
     is_staff = models.BooleanField('status de staff', default=False)

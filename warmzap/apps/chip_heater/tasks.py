@@ -13,6 +13,9 @@ from chip_heater.models import Chip, Message
 def send_message_and_schedule_next(chip_pk: str):
     chip = Chip.objects.get(id=chip_pk)
 
+    if chip.stage != chip.StageChoices.STARTED:
+        return
+
     next_message_time = timezone.now() + timedelta(seconds=randint(30, 180))  # noqa: S311
     start_hour = 8
     end_hour = 21

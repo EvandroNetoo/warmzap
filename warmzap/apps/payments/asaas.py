@@ -23,7 +23,7 @@ class BaseAssas:
     url = SANDBOX_URL if settings.DEBUG else PRODUCTION_URL
 
     @classmethod
-    async def post(cls, endpoint: str, data: dict, **kwargs) -> dict:
+    async def _post(cls, endpoint: str, data: dict, **kwargs) -> dict:
         async with httpx.AsyncClient() as client:
             url = urljoin(cls.url, endpoint)
             response = await client.post(
@@ -36,7 +36,7 @@ class BaseAssas:
             return response.json()
 
     @classmethod
-    async def put(cls, endpoint: str, data: dict, **kwargs) -> dict:
+    async def _put(cls, endpoint: str, data: dict, **kwargs) -> dict:
         async with httpx.AsyncClient() as client:
             url = urljoin(cls.url, endpoint)
             response = await client.put(
@@ -48,7 +48,7 @@ class BaseAssas:
             return response.json()
 
     @classmethod
-    async def get(cls, endpoint: str, **kwargs) -> dict:
+    async def _get(cls, endpoint: str, **kwargs) -> dict:
         async with httpx.AsyncClient() as client:
             response = await client.get(
                 urljoin(cls.url, endpoint),
@@ -63,7 +63,7 @@ class CustomersAssas(BaseAssas):
 
     @classmethod
     async def create(cls, user: User) -> str:
-        response = await cls.post(
+        response = await cls._post(
             cls.base_endpoint,
             {
                 'name': user.full_name,
@@ -73,7 +73,7 @@ class CustomersAssas(BaseAssas):
                 'mobilePhone': user.cellphone,
             },
         )
-        return response.get('id')
+        return response
 
 
 class SubscriptionsAssas(BaseAssas):
@@ -88,7 +88,7 @@ class SubscriptionsAssas(BaseAssas):
             'UNDEFINED', 'BOLETO', 'CREDIT_CARD', 'PIX'
         ] = 'CREDIT_CARD',
     ) -> str:
-        response = await cls.post(
+        response = await cls._post(
             cls.base_endpoint,
             {
                 'customer': customer_id,
@@ -102,7 +102,7 @@ class SubscriptionsAssas(BaseAssas):
             },
         )
 
-        return response.get('id')
+        return response
 
     @classmethod
     async def update(
@@ -110,13 +110,52 @@ class SubscriptionsAssas(BaseAssas):
         subscription_id: str,
         data: dict,
     ) -> str:
-        response = await cls.put(
+        response = await cls._put(
             f'{cls.base_endpoint}/{subscription_id}',
             data=data,
         )
-        return response.get('id')
+        return response
+
+    @classmethod
+    async def get(
+        cls,
+        subscription_id: str,
+    ) -> str:
+        response = await cls._get(
+            f'{cls.base_endpoint}/{subscription_id}',
+        )
+        return response
+
+    @classmethod
+    async def payments(
+        cls,
+        subscription_id: str,
+        **kwargs,
+    ) -> str:
+        response = await cls._get(
+            f'{cls.base_endpoint}/{subscription_id}/payments',
+            **kwargs,
+        )
+        return response.get('data')
+
+
+class PaymentsAssas(BaseAssas):
+    base_endpoint = 'payments'
+
+    @classmethod
+    async def pay_with_credit_card(
+        cls, payment_id: str, credit_card_token: str
+    ) -> str:
+        response = await cls._post(
+            f'{cls.base_endpoint}/{payment_id}/payWithCreditCard',
+            data={
+                'creditCardToken': credit_card_token,
+            },
+        )
+        return response
 
 
 class Asaas:
     customers = CustomersAssas
     subscriptions = SubscriptionsAssas
+    payments = PaymentsAssas
