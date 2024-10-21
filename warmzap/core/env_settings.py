@@ -7,6 +7,7 @@ class Settings(BaseSettings):
     SECRET_KEY: str
     DEBUG: bool
     ASAAS_ACCESS_TOKEN: Optional[str]
+    ALLOWED_HOSTS: Optional[list[str]] = ['*']
 
 
 env_settings = Settings()
