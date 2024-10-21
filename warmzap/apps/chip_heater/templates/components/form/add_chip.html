@@ -102,7 +102,7 @@
             toggleView(true);
 
             const chip_name = addChipForm.getElementsByTagName('input')[0].value;
-            socket = new WebSocket(`ws://127.0.0.1:8000/ws/qrcode/`);
+            socket = new WebSocket(`ws://${window.location.host}/ws/qrcode/`);
 
             socket.onopen = () => {
                 socket.send(JSON.stringify({
