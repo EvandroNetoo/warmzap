@@ -99,12 +99,25 @@ CHANNEL_LAYERS = {
 
 # Database
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': env_settings.DB_NAME,
+            'USER': env_settings.DB_USER,
+            'PASSWORD': env_settings.DB_PASSWORD,
+            'HOST': env_settings.DB_HOST,
+            'PORT': env_settings.DB_PORT,
+        }
+    }
 
 
 # Accounts
@@ -189,7 +202,7 @@ CELERY_TASK_SERIALIZER = 'json'
 
 ASAAS_ACCESS_TOKEN = env_settings.ASAAS_ACCESS_TOKEN
 if not DEBUG:
-	SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-	SECURE_SSL_REDIRECT = True
-	SESSION_COOKIE_SECURE = True
-	CSRF_COOKIE_SECURE = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
