@@ -3,16 +3,16 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.staticfiles.storage import staticfiles_storage
+from django.http import FileResponse, HttpRequest
 from django.urls import include, path
-from django.views.generic import RedirectView
+
+
+def favicon_view(request: HttpRequest):
+    return FileResponse(staticfiles_storage.open('general/img/favicon.ico'))
+
 
 urlpatterns = [
-    path(
-        'favicon.ico',
-        RedirectView.as_view(
-            url=staticfiles_storage.url('general/img/favicon.ico')
-        ),
-    ),
+    path('favicon.ico', favicon_view),
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
     path('', include('chip_heater.urls')),
