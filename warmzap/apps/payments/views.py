@@ -35,7 +35,7 @@ class SubscriptionPlansView(View):
 
 
 class SubscribePlanView(View):
-    def dispatch(self, request, *args, **kwargs):
+    async def post(self, request: HttpRequest):
         subscription_plan_value = request.POST.get('subscription_plan')
 
         self.subscription_plan = SUBSCRIPTION_PLANS_SETTINGS.get(
@@ -59,9 +59,6 @@ class SubscribePlanView(View):
             messages.warning(request, 'Você já está assinando este plano')
             return HttpResponseClientRedirect(reverse('subscription_plans'))
 
-        return super().dispatch(request, *args, **kwargs)
-
-    async def post(self, request: HttpRequest):
         if not request.user.asaas_customer:
             request.user.asaas_customer = await Asaas.customers.create(
                 request.user
