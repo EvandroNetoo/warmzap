@@ -9,14 +9,18 @@ class Settings(BaseSettings):
     )
     SECRET_KEY: str
     DEBUG: bool
-    ASAAS_ACCESS_TOKEN: Optional[str]
     ALLOWED_HOSTS: Optional[list[str]] = ['*']
 
-    DB_NAME: str
-    DB_HOST: str
-    DB_PORT: int
-    DB_USER: str
-    DB_PASSWORD: str
+    ASAAS_ACCESS_TOKEN: Optional[str]
+
+    DB_NAME: Optional[str]
+    DB_HOST: Optional[str]
+    DB_PORT: Optional[int]
+    DB_USER: Optional[str]
+    DB_PASSWORD: Optional[str]
+
+    REDIS_HOST: Optional[str] = 'localhost'
+    REDIS_PORT: Optional[int] = 6379
 
 
 env_settings = Settings()
