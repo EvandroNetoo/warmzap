@@ -71,8 +71,7 @@ class QRCodeConsumer(AsyncWebsocketConsumer):
         self.profile_dir_path = f'wpp_sessions/{token_hex(16)}'
         options = Options()
         options.add_argument(f'user-data-dir={self.profile_dir_path}')
-        # options.add_argument('--no-sandbox')
-        # options.add_argument('disable-dev-shm-usage')
+        options.add_argument('--no-sandbox')
         options.add_argument('--headless=new')
         service = Service()
         self.driver = webdriver.Chrome(service=service, options=options)
