@@ -1,3 +1,4 @@
+from math import e
 import os
 import sys
 from pathlib import Path
@@ -13,7 +14,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = env_settings.SECRET_KEY
 
-DEBUG = False
+DEBUG = env_settings.DEBUG
 
 ALLOWED_HOSTS = env_settings.ALLOWED_HOSTS
 
