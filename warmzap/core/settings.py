@@ -151,15 +151,9 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-# CORS
+# CSRF
 
-
-CORS_ORIGIN_ALLOW_ALL = [
-    'https://warmzap.com.br',    
-    'http://189.126.105.136',
-    'http://127.0.0.1:8000',
-    'http://localhost:8000',
-]
+CSRF_TRUSTED_ORIGINS = ['https://warmzap.vps-kinghost.net']
 
 
 # Cotton
@@ -194,3 +188,8 @@ CELERY_TASK_SERIALIZER = 'json'
 # Asaas
 
 ASAAS_ACCESS_TOKEN = env_settings.ASAAS_ACCESS_TOKEN
+if not DEBUG:
+	SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+	SECURE_SSL_REDIRECT = True
+	SESSION_COOKIE_SECURE = True
+	CSRF_COOKIE_SECURE = True
