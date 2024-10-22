@@ -1,7 +1,7 @@
-from math import e
 import os
 import sys
 from pathlib import Path
+from urllib.parse import quote
 
 from django.contrib import messages
 
@@ -87,15 +87,19 @@ ASGI_APPLICATION = 'core.asgi.application'
 
 CHANNEL_LAYERS = {
     'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'BACKEND': 'channels_redis.pubsub.RedisPubSubChannelLayer',
         'CONFIG': {
-            'hosts': [('127.0.0.1', 6379)],
+            'hosts': [
+                {
+                    'address': env_settings.REDIS_URL,
+                }
+            ]
         },
-    },
+    }
 }
 
-# Database
 
+# Database
 
 if DEBUG:
     DATABASES = {
@@ -189,7 +193,7 @@ INTERNAL_IPS = ['127.0.0.1']
 # Celery
 
 
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_BROKER_URL = f'{quote(env_settings.REDIS_URL)}/0'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 

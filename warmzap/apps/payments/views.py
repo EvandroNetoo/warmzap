@@ -58,7 +58,9 @@ class SubscribePlanView(View):
 
             if subscription_plan_value == request.user.subscription_plan:
                 messages.warning(request, 'Você já está assinando este plano')
-                return HttpResponseClientRedirect(reverse('subscription_plans'))
+                return HttpResponseClientRedirect(
+                    reverse('subscription_plans')
+                )
 
             if not request.user.asaas_customer:
                 request.user.asaas_customer = await Asaas.customers.create(
@@ -79,14 +81,18 @@ class SubscribePlanView(View):
 
             if subscription_id:
                 subscription_data['updatePendingPayments'] = True
-                request.user.asaas_subscription = await Asaas.subscriptions.update(
-                    subscription_id,
-                    subscription_data,
+                request.user.asaas_subscription = (
+                    await Asaas.subscriptions.update(
+                        subscription_id,
+                        subscription_data,
+                    )
                 )
             else:
-                request.user.asaas_subscription = await Asaas.subscriptions.create(
-                    request.user.asaas_customer.get('id'),
-                    self.subscription_plan,
+                request.user.asaas_subscription = (
+                    await Asaas.subscriptions.create(
+                        request.user.asaas_customer.get('id'),
+                        self.subscription_plan,
+                    )
                 )
 
             await request.user.asave()
@@ -97,7 +103,9 @@ class SubscribePlanView(View):
             last_payment = payments[0]
 
             if not request.user.asaas_subscription.get('creditCard'):
-                return HttpResponseClientRedirect(last_payment.get('invoiceUrl'))
+                return HttpResponseClientRedirect(
+                    last_payment.get('invoiceUrl')
+                )
             else:
                 payment = await Asaas.payments.pay_with_credit_card(
                     last_payment.get('id'),
@@ -113,16 +121,18 @@ class SubscribePlanView(View):
                     )
                 else:
                     messages.error(
-                        request, 'Falha na assinatura, tente novamente mais tarde'
+                        request,
+                        'Falha na assinatura, tente novamente mais tarde',
                     )
 
             return HttpResponseClientRedirect(reverse('dashboard'))
-        
-        except Exception as e:
+
+        except Exception:
             messages.error(
                 request,
                 'Ocorreu um erro ao assinar o plano, tente novamente mais tarde',
             )
+
 
 @method_decorator([csrf_exempt, login_not_required], name='dispatch')
 class AsaasWebhookView(View):

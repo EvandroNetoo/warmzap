@@ -19,8 +19,7 @@ class Settings(BaseSettings):
     DB_USER: Optional[str]
     DB_PASSWORD: Optional[str]
 
-    REDIS_HOST: Optional[str] = 'localhost'
-    REDIS_PORT: Optional[int] = 6379
+    REDIS_URL: Optional[str] = 'redis://localhost:6379'
 
 
 env_settings = Settings()
