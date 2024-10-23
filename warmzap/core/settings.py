@@ -193,7 +193,7 @@ INTERNAL_IPS = ['127.0.0.1']
 # Celery
 
 
-CELERY_BROKER_URL = f'{quote(env_settings.REDIS_URL)}/0'
+CELERY_BROKER_URL = f'{env_settings.REDIS_URL}/0'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 
