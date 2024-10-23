@@ -18,8 +18,11 @@ class UserForm(forms.ModelForm):
         }
         widgets = {
             'cellphone': forms.TextInput(
-                attrs={'oninput': 'cellphoneMask(this)'}
-            )
+                attrs={'oninput': 'cellphoneMask(this)'},
+            ),
+            'cpf': forms.TextInput(
+                attrs={'oninput': 'cpfMask(this)'},
+            ),
         }
 
     def __init__(self, *args, **kwargs):

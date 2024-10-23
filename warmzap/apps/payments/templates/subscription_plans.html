@@ -1,9 +1,14 @@
 {% extends 'base_authenticated.html' %}
 
+{% load static %}
+
 {% block head %}
 
     <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+          href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.1/css/swiper.min.css" />
+
+    <link rel="stylesheet"
+          href="{% static 'payments/css/subscription-plans.css' %}" />
 
 {% endblock head %}
 
@@ -25,130 +30,64 @@
 
         <c-messages />
 
-        {% comment %}
-		 <div>
-		
-		            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 sm:gap-6 md:gap-8 lg:gap-10">
-		
-		                {% for subscription_plan in subscription_plans.values %}
-		
-		                    <div class="flex flex-col gap-y-4 items-center justify-center bg-gradient-to-r from-white via-gray-50 to-white p-8 rounded-xl shadow-lg transform transition hover:scale-105 hover:shadow-2xl">
-		                        <h3 class="text-2xl font-extrabold text-primary-600">{{ subscription_plan.label }}</h3>
-		
-		                        {% if subscription_plan.value == 'infinity' %}
-		
-		                            <p class="text-xl font-bold text-primary-800 text-center">Consulte um vendedor</p>
-		                            <p class="mt-2 text-lg text-primary-500 text-center">Sem limite de chips simultâneos</p>
-		                            <a class="primary-button w-full font-bold">Assinar</a>
-		
-		                        {% else %}
-		
-		                            <p class="text-xl font-bold text-primary-800 text-center">R$ {{ subscription_plan.price|floatformat:2 }}</p>
-		                            <p class="mt-2 text-lg text-primary-500 text-center">
-		                                Limite de {{ subscription_plan.chips_limit }} chip{{ subscription_plan.chips_limit|pluralize:",s" }} simultâneo{{ subscription_plan.chips_limit|pluralize:",s" }}
-		                            </p>
-		                            <button class="primary-button w-full font-bold" hx-post="{% url 'subscribe_plan' %}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-vals='{"subscription_plan": "{{ subscription_plan.value }}"}' hx-disabled-elt="this">Assinar</button>
-		
-		                        {% endif %}
-		
-		                    </div>
-		
-		                {% endfor %}
-		
-		            </div>
-		
-		        </div>
-
-        {% endcomment %}
-
-        <style>
-            .swiper-containen {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                font-size: 14px;
-                color: #000;
-                margin: 0;
-                padding: 0;
-                max-width: 100%;
-                margin: auto;
-                overflow: hidden;
-                min-height: 500px;
-            }
-        </style>
-        <div class="swiper-container">
-            <div class="swiper-wrapper" style="max-width: 1200px;">
+        <div class="swiper-container two">
+            <div class="swiper-wrapper">
 
                 {% for subscription_plan in subscription_plans.values %}
 
                     <div class="swiper-slide">
-                        <div class="w-80 h-96 flex flex-col gap-y-4 items-center justify-center bg-gradient-to-r from-white via-gray-50 to-white p-8 rounded-xl shadow-lg transform transition hover:scale-105 hover:shadow-2xl">
-                            <h3 class="text-2xl font-extrabold text-primary-600">{{ subscription_plan.label }}</h3>
+                        <div class="slider-image">
+                            <div class="w-80 h-96 flex flex-col gap-y-4 items-center justify-center bg-gradient-to-r from-white via-gray-50 to-white p-8 rounded-xl shadow-lg transform transition hover:scale-105 hover:shadow-2xl">
+                                <h3 class="text-2xl font-extrabold text-primary-600">{{ subscription_plan.label }}</h3>
 
-                            {% if subscription_plan.value == 'infinity' %}
+                                {% if subscription_plan.value == 'infinity' %}
 
-                                <p class="text-xl font-bold text-primary-800 text-center">Consulte um vendedor</p>
-                                <p class="mt-2 text-lg text-primary-500 text-center">Sem limite de chips simultâneos</p>
-                                <a class="primary-button w-full font-bold">Assinar</a>
+                                    <p class="text-xl font-bold text-primary-800 text-center">Consulte um vendedor</p>
+                                    <p class="mt-2 text-lg text-primary-500 text-center">Sem limite de chips simultâneos</p>
+                                    <a class="primary-button w-full font-bold">Assinar</a>
 
-                            {% else %}
+                                {% else %}
 
-                                <p class="text-xl font-bold text-primary-800 text-center">R$ {{ subscription_plan.price|floatformat:2 }}</p>
-                                <p class="mt-2 text-lg text-primary-500 text-center">
-                                    Limite de {{ subscription_plan.chips_limit }} chip{{ subscription_plan.chips_limit|pluralize:",s" }} simultâneo{{ subscription_plan.chips_limit|pluralize:",s" }}
-                                </p>
-                                <button class="primary-button w-full font-bold"
-                                        hx-post="{% url 'subscribe_plan' %}"
-                                        hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-                                        hx-vals='{"subscription_plan": "{{ subscription_plan.value }}"}'
-                                        hx-disabled-elt="this">Assinar</button>
+                                    <p class="text-xl font-bold text-primary-800 text-center">R$ {{ subscription_plan.price|floatformat:2 }}</p>
+                                    <p class="mt-2 text-lg text-primary-500 text-center">
+                                        Limite de {{ subscription_plan.chips_limit }} chip{{ subscription_plan.chips_limit|pluralize:",s" }} simultâneo{{ subscription_plan.chips_limit|pluralize:",s" }}
+                                    </p>
+                                    <button class="primary-button w-full font-bold"
+                                            hx-post="{% url 'subscribe_plan' %}"
+                                            hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                            hx-vals='{"subscription_plan": "{{ subscription_plan.value }}"}'
+                                            hx-disabled-elt="this">Assinar</button>
 
-                            {% endif %}
+                                {% endif %}
 
+                            </div>
                         </div>
                     </div>
 
                 {% endfor %}
 
             </div>
-            <!-- Add Pagination -->
             <div class="swiper-pagination"></div>
-            <!-- Add Navigation -->
-            <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div>
         </div>
+
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.1/js/swiper.min.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            new Swiper('.swiper-container', {
-                slidesPerView: 3,
-                spaceBetween: -1000,
-                loop: true,
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true,
-                },
-                navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
-                },
-                breakpoints: {
-                    // Responsividade para diferentes tamanhos de tela
-                    640: {
-                        slidesPerView: 1,
-                        spaceBetween: 20,
-                    },
-                    768: {
-                        slidesPerView: 2,
-                        spaceBetween: 40,
-                    },
-                    1024: {
-                        slidesPerView: 3,
-                        spaceBetween: 50,
-                    },
-                },
-            });
+        var swiper = new Swiper('.swiper-container.two', {
+            pagination: '.swiper-pagination',
+            paginationClickable: true,
+            effect: 'coverflow',
+            loop: false,
+            centeredSlides: true,
+            slidesPerView: 'auto',
+            coverflow: {
+                rotate: 0,
+                stretch: 40,
+                depth: 150,
+                modifier: 1.5,
+                slideShadows: false,
+            }
         });
     </script>
 

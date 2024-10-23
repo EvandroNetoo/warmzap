@@ -1,19 +1,41 @@
+import re
+
 from django.core.exceptions import ValidationError
 
 
-def validate_cpf(cpf: str):
-    cpf = ''.join(filter(str.isdigit, cpf or ''))
+def validate_cpf(value):
+    cpf = re.sub(r'[^0-9]', '', str(value))
 
-    len_cpf = 11
-    if len(cpf) < len_cpf:
-        return False
+    cpf_len = 11
 
-    if cpf in [s * 11 for s in [str(n) for n in range(10)]]:
-        return False
+    if len(cpf) != cpf_len:
+        raise ValidationError('CPF deve conter 11 dígitos.')
 
-    calc = lambda t: int(t[1]) * (t[0] + 2)  # noqa
-    d1 = (sum(map(calc, enumerate(reversed(cpf[:-2])))) * 10) % 11
-    d2 = (sum(map(calc, enumerate(reversed(cpf[:-1])))) * 10) % 11
+    if len(set(cpf)) == 1:
+        raise ValidationError('CPF inválido.')
 
-    if not (str(d1) == cpf[-2] and str(d2) == cpf[-1]):
-        raise ValidationError('CPF inválido')
+    soma = 0
+    peso = 10
+
+    for i in range(9):
+        soma += int(cpf[i]) * peso
+        peso -= 1
+
+    resto = soma % cpf_len
+    digito1 = 0 if resto < 2 else cpf_len - resto  # noqa
+
+    if int(cpf[9]) != digito1:
+        raise ValidationError('CPF inválido.')
+
+    soma = 0
+    peso = cpf_len
+
+    for i in range(10):
+        soma += int(cpf[i]) * peso
+        peso -= 1
+
+    resto = soma % cpf_len
+    digito2 = 0 if resto < 2 else cpf_len - resto  # noqa
+
+    if int(cpf[10]) != digito2:
+        raise ValidationError('CPF inválido.')

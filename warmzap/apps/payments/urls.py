@@ -14,6 +14,11 @@ urlpatterns = [
         name='subscribe_plan',
     ),
     path(
+        'cancel-subscription/',
+        views.CancelSubscriptionView.as_view(),
+        name='cancel_subscription',
+    ),
+    path(
         'asaas-webhook/',
         views.AsaasWebhookView.as_view(),
         name='asaas_webhook',

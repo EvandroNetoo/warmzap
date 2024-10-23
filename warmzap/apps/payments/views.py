@@ -77,6 +77,7 @@ class SubscribePlanView(View):
                 'nextDueDate': timezone.now().strftime('%Y-%m-%d'),
                 'description': f'Assinatura do plano {self.subscription_plan.label} na WarmZap',
                 'externalReference': self.subscription_plan.value,
+                'status': 'ACTIVE',
             }
 
             if subscription_id:
@@ -132,6 +133,25 @@ class SubscribePlanView(View):
                 request,
                 'Ocorreu um erro ao assinar o plano, tente novamente mais tarde',
             )
+
+
+class CancelSubscriptionView(View):
+    async def post(self, request: HttpRequest):  # noqa
+        subscription_plan = request.user.asaas_subscription
+
+        subscription_plan = await Asaas.subscriptions.update(
+            subscription_plan.get('id'),
+            {
+                'status': 'INACTIVE',
+            },
+        )
+
+        request.user.asaas_subscription = subscription_plan
+        await request.user.asave()
+
+        messages.success(request, 'Assinatura cancelada com sucesso')
+
+        return HttpResponseClientRedirect(reverse('profile_settings'))
 
 
 @method_decorator([csrf_exempt, login_not_required], name='dispatch')
