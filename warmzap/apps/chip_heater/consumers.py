@@ -36,7 +36,7 @@ class QRCodeConsumer(AsyncWebsocketConsumer):
         try:
             await self.close()
         except Exception:
-            ...
+            await self.cleanup_resources()
 
     async def disconnect(self, code):
         await self.cleanup_resources()
@@ -144,10 +144,10 @@ class QRCodeConsumer(AsyncWebsocketConsumer):
         timeout = 90
         end = datetime.now() + timedelta(seconds=timeout)
         now = datetime.now()
-        logged_in = 'class="two _aigs"' in self.driver.page_source
+        logged_in = 'two _aigs' in self.driver.page_source
 
         while not logged_in and now < end:
-            logged_in = 'class="two _aigs"' in self.driver.page_source
+            logged_in = 'two _aigs' in self.driver.page_source
             await asyncio.sleep(0.5)
 
         if not logged_in:

@@ -75,12 +75,14 @@
         <form class="grid gap-y-8"
               hx-post="{% url 'start_heating' chip.pk %}"
               hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-              hx-target="#form">
-            <div id="form">
+              hx-target="#form{{ chip.id }}">
+
+            <div id="form{{ chip.id }}">
 
                 {% include "components/form.html" with form=start_heating_form %}
 
             </div>
+
             <div class="flex justify-end gap-4">
                 <button type="button"
                         class="light-button"
