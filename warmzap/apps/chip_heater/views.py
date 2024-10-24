@@ -5,6 +5,7 @@ from django.views import View
 
 from chip_heater.forms import ChipForm, StartHeatingForm
 from chip_heater.models import Chip
+from chip_heater.tasks import send_message_and_schedule_next
 
 
 class DashboardView(View):
@@ -12,7 +13,7 @@ class DashboardView(View):
 
     async def get(self, request: HttpRequest):
         chips = Chip.objects.filter(user=request.user)
-
+        send_message_and_schedule_next.delay((await chips.afirst()).pk)
         chips_counts = await chips.aaggregate(
             not_started_count=Count(
                 'id', filter=Q(stage=Chip.StageChoices.NOT_STARTED)

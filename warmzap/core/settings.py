@@ -1,7 +1,6 @@
 import os
 import sys
 from pathlib import Path
-from urllib.parse import quote
 
 from django.contrib import messages
 

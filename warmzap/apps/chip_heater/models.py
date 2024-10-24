@@ -1,10 +1,13 @@
+import os
 import re
 import shutil
 import zipfile
+from pathlib import Path
 from secrets import token_hex
 
+import requests
+from core.env_settings import env_settings
 from django.conf import settings
-from django.core.files.storage import default_storage
 from django.core.validators import FileExtensionValidator
 from django.db import models
 
@@ -59,19 +62,34 @@ class Chip(models.Model):
         return formatted
 
     def send_message(self, to: str, message: str):
+        Path(settings.BASE_DIR / 'wpp_sessions').mkdir(
+            parents=True, exist_ok=True
+        )
+
         directory_token = token_hex(16)
         profile_dir_path = (
             settings.BASE_DIR / f'wpp_sessions/{directory_token}'
         )
-        try:
-            with default_storage.open(self.browser_profile.path, 'rb') as f:
-                with zipfile.ZipFile(f, 'r') as zip_ref:
-                    zip_ref.extractall(profile_dir_path)
+        zip_file_path = (
+            settings.BASE_DIR / f'wpp_sessions/{directory_token}.zip'
+        )
 
-                WhatsAppWeb(profile_dir_path).send_message_to_number(
-                    to, message
-                )
+        try:
+            download_url = f'{env_settings.HOST}{self.browser_profile.url}'
+
+            response = requests.get(download_url, stream=True, timeout=60)
+            response.raise_for_status()
+
+            with open(zip_file_path, 'wb') as out_file:
+                out_file.write(response.raw.data)
+
+            with zipfile.ZipFile(zip_file_path, 'r') as zip_ref:
+                zip_ref.extractall(profile_dir_path)
+
+            WhatsAppWeb(profile_dir_path).send_message_to_number(to, message)
+
         finally:
+            os.remove(zip_file_path)
             shutil.rmtree(profile_dir_path)
 
 

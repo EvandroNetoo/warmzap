@@ -34,7 +34,7 @@ taskipy = "^1.13.0"
 [tool.taskipy.tasks]
 lint = 'ruff check . && djlint . --check'
 format = 'ruff check . --fix && ruff format . && djlint . --reformat --quiet'
-run = 'python warmzap/manage.py runserver'
+run = 'uvicorn core.asgi:application --port 8082 --reload --log-level debug'
 makemigrations = 'python warmzap/manage.py makemigrations'
 migrate = 'python warmzap/manage.py migrate'
 runworker = 'celery -A core worker -l info'

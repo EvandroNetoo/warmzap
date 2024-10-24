@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 from secrets import token_hex
 
 from channels.generic.websocket import AsyncWebsocketConsumer
+from django.conf import settings
 from django.core.files import File
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
@@ -68,7 +69,9 @@ class QRCodeConsumer(AsyncWebsocketConsumer):
         await self.sync_data(number)
 
     def setup_selenium(self):
-        self.profile_dir_path = f'wpp_sessions/{token_hex(16)}'
+        self.profile_dir_path = (
+            settings.BASE_DIR / f'wpp_sessions/{token_hex(16)}'
+        )
         options = Options()
         options.add_argument(f'user-data-dir={self.profile_dir_path}')
         options.add_argument('--no-sandbox')

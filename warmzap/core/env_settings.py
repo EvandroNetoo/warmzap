@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     )
     SECRET_KEY: str
     DEBUG: bool
+    HOST: str
     ALLOWED_HOSTS: Optional[list[str]] = ['*']
 
     ASAAS_ACCESS_TOKEN: Optional[str]
